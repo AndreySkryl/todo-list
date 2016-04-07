@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -34,7 +35,7 @@ public class ListOfTasksImpl implements ListOfTasksDAO {
     }
 
     @Override
-    public void insertBatch(List<ListOfTasks> listOfTasks) {
+    public void insertBatch(Collection<ListOfTasks> listOfTasks) {
         for (ListOfTasks listOfTask : listOfTasks) {
             insert(listOfTask);
         }
@@ -53,7 +54,7 @@ public class ListOfTasksImpl implements ListOfTasksDAO {
     }
 
     @Override
-    public List<ListOfTasks> findAll() {
+    public Collection<ListOfTasks> findAll() {
         String sql = "SELECT * FROM COLLEAGUE";
         List<ListOfTasks> allListOfTasks = jdbcTemplate.query(sql, new ListOfTasksRowMapper());
         return allListOfTasks;

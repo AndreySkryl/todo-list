@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -32,7 +33,7 @@ public class UserAndListOfTasksImpl implements UserAndListOfTasksDAO {
     }
 
     @Override
-    public void insertBatch(List<UserAndListOfTasks> listOfUserAndListOfTasks) {
+    public void insertBatch(Collection<UserAndListOfTasks> listOfUserAndListOfTasks) {
         for (UserAndListOfTasks userAndListOfTasks : listOfUserAndListOfTasks) {
             insert(userAndListOfTasks);
         }
@@ -44,14 +45,14 @@ public class UserAndListOfTasksImpl implements UserAndListOfTasksDAO {
     }
 
     @Override
-    public List<UserAndListOfTasks> findUserAndListOfTasksByListOfTasksGuid(String listOfTasksGuid) {
+    public Collection<UserAndListOfTasks> findUserAndListOfTasksByListOfTasksGuid(String listOfTasksGuid) {
         String sql = "SELECT * FROM USER__LIST_OF_TASKS WHERE LIST_OF_TASKS_GUID = ?";
         List<UserAndListOfTasks> list = jdbcTemplate.query(sql, new UserAndListOfTasksRowMapper(), listOfTasksGuid);
         return list;
     }
 
     @Override
-    public List<UserAndListOfTasks> findAll() {
+    public Collection<UserAndListOfTasks> findAll() {
         String sql = "SELECT * FROM USER__LIST_OF_TASKS";
         List<UserAndListOfTasks> list = jdbcTemplate.query(sql, new UserAndListOfTasksRowMapper());
         return list;

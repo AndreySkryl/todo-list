@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -28,7 +29,7 @@ public class UserDAOImpl implements UserDAO {
                 user.getPassword(), user.geteMail());
     }
 
-    public void insertBatch(List<User> users) {
+    public void insertBatch(Collection<User> users) {
         for (User user : users) {
             insert(user);
         }
@@ -50,7 +51,7 @@ public class UserDAOImpl implements UserDAO {
         return login;
     }
 
-    public List<User> findAll() {
+    public Collection<User> findAll() {
         String sql = "SELECT * FROM USER";
         List<User> users = jdbcTemplate.query(sql, new UserRowMapper());
         return users;
