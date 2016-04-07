@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -33,7 +34,7 @@ public class ColleagueDAOImpl implements ColleagueDAO {
     }
 
     @Override
-    public void insertBatch(List<Colleague> colleagues) {
+    public void insertBatch(Collection<Colleague> colleagues) {
         for (Colleague colleague : colleagues) {
             insert(colleague);
         }
@@ -45,14 +46,14 @@ public class ColleagueDAOImpl implements ColleagueDAO {
     }
 
     @Override
-    public List<Colleague> findListOfColleaguesByUserGuid(String userGuid) {
+    public Collection<Colleague> findListOfColleaguesByUserGuid(String userGuid) {
         String sql = "SELECT * FROM COLLEAGUE WHERE USER_GUID = ?";
         List<Colleague> colleagues = jdbcTemplate.query(sql, new ColleagueRowMapper(), userGuid);
         return colleagues;
     }
 
     @Override
-    public List<Colleague> findAll() {
+    public Collection<Colleague> findAll() {
         String sql = "SELECT * FROM COLLEAGUE";
         List<Colleague> colleagues = jdbcTemplate.query(sql, new ColleagueRowMapper());
         return colleagues;

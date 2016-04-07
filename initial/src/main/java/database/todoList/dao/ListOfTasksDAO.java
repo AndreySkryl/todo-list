@@ -2,15 +2,15 @@ package database.todoList.dao;
 
 import database.todoList.model.ListOfTasks;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface ListOfTasksDAO {
     void insert(ListOfTasks listOfTasks);
-    void insertBatch(List<ListOfTasks> listOfTasks);
+    void insertBatch(Collection<ListOfTasks> listOfTasks);
     void insertBatchSQL(String sql);
 
     ListOfTasks findListOfTasksByGuid(String guid);
-    List<ListOfTasks> findAll();
+    Collection<ListOfTasks> findAll();
 
     int findTotalListOfTasks();
 }
