@@ -9,8 +9,11 @@ public interface ColleagueDAO {
     void insertBatch(Collection<Colleague> colleagues);
     void insertBatchSQL(String sql);
 
-    Collection<Colleague> findListOfColleaguesByUserGuid(String userGuid);
+    Collection<String> findGuidOfColleagues(String userGuid);
+    Collection<Colleague> findColleaguesByUserGuid(String userGuid);
     Collection<Colleague> findAll();
-
     int findTotalColleague();
+
+	void delete(String userGuid, String guidOfColleague);
+	void delete(String userGuid, Collection<String> guidOfColleagues);
 }

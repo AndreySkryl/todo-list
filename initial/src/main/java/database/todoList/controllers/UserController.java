@@ -28,7 +28,7 @@ public class UserController {
 			userDAO.insert(user);
 			return Response.SC_CREATED;
 		} catch (DataAccessException exception) {
-			System.out.println(exception.getMessage());
+			System.err.println(exception.getMessage());
 		}
 		return Response.SC_CONFLICT;
 	}
@@ -39,7 +39,7 @@ public class UserController {
 			userDAO.insertBatch(users);
 			return Response.SC_CREATED;
 		} catch (DataAccessException exception) {
-			System.out.println(exception.getMessage());
+			System.err.println(exception.getMessage());
 		}
 		return Response.SC_CONFLICT;
 	}
@@ -50,7 +50,7 @@ public class UserController {
 			User user = userDAO.findUserByGuid(guid);
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		} catch (DataAccessException exception) {
-			System.out.println(exception.getMessage());
+			System.err.println(exception.getMessage());
 		}
 		return new ResponseEntity<>(new User(), HttpStatus.CONFLICT);
     }
@@ -60,7 +60,7 @@ public class UserController {
 		try {
 			return new ResponseEntity<>(userDAO.findAll(), HttpStatus.OK);
 		} catch (DataAccessException exception) {
-			System.out.println(exception.getMessage());
+			System.err.println(exception.getMessage());
 		}
 		return new ResponseEntity<Collection<User>>(Collections.EMPTY_LIST, HttpStatus.CONFLICT);
     }
@@ -70,7 +70,7 @@ public class UserController {
 		try {
 			return new ResponseEntity<>(userDAO.findTotalUsers(), HttpStatus.OK);
 		} catch (DataAccessException exception) {
-			System.out.println(exception.getMessage());
+			System.err.println(exception.getMessage());
 		}
 		return new ResponseEntity<>(0, HttpStatus.CONFLICT);
 	}
@@ -81,7 +81,7 @@ public class UserController {
 			userDAO.update(guidUser, user);
 			return Response.SC_OK;
 		} catch (DataAccessException exception) {
-			System.out.println(exception.getMessage());
+			System.err.println(exception.getMessage());
 		}
 		return Response.SC_CONFLICT;
 	}
@@ -92,18 +92,18 @@ public class UserController {
 			userDAO.delete(guid);
 			return Response.SC_OK;
 		} catch (DataAccessException exception) {
-			System.out.println(exception.getMessage());
+			System.err.println(exception.getMessage());
 		}
 		return Response.SC_CONFLICT;
 	}
 
-	@RequestMapping(value = "/delete/", consumes = "application/json", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/delete", consumes = "application/json", method = RequestMethod.DELETE)
 	public int deleteUsers(@RequestBody Collection<String> guides) {
 		try {
 			userDAO.delete(guides);
 			return Response.SC_OK;
 		} catch (DataAccessException exception) {
-			System.out.println(exception.getMessage());
+			System.err.println(exception.getMessage());
 		}
 		return Response.SC_CONFLICT;
 	}

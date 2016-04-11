@@ -10,7 +10,7 @@ public interface UserDAO {
     void insertBatchSQL(String sql);
 
     User findUserByGuid(String guid);
-    String findUserLoginByGuid(String guid);
+    Collection<User> find(Collection<String> guides);
     Collection<User> findAll();
 
     int findTotalUsers();
@@ -18,5 +18,5 @@ public interface UserDAO {
     void update(String guid, User user);
 
     void delete(String guid);
-	void delete(Collection<String> guids);
+	void delete(Collection<String> guides);
 }

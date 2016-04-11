@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Repository
@@ -40,14 +41,17 @@ public class UserDAOImpl implements UserDAO {
         return user;
     }
 
-    @Override
-    public String findUserLoginByGuid(String guid) {
-        String sql = "SELECT LOGIN FROM USER WHERE GUID = ?;";
-        String login = jdbcTemplate.queryForObject(sql, String.class, guid);
-        return login;
-    }
+	@Override
+	public Collection<User> find(Collection<String> guides) {
+		Collection<User> listOfUser = new ArrayList<>();
+		for (String guid : guides) {
+			User user = findUserByGuid(guid);
+			listOfUser.add(user);
+		}
+		return listOfUser;
+	}
 
-    @Override
+	@Override
     public Collection<User> findAll() {
         String sql = "SELECT * FROM USER;";
         return jdbcTemplate.query(sql, new UserRowMapper());
