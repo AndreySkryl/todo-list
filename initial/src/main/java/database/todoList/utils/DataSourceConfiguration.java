@@ -35,17 +35,3 @@ public class DataSourceConfiguration {
 		return new JdbcTemplate(this.dataSource);
 	}
 }
-
-/*DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-dataSourceBuilder.driverClassName(driverClassName);
-dataSourceBuilder.url(url);
-dataSourceBuilder.username(username);
-dataSourceBuilder.password(password);
-return dataSourceBuilder.build();*/
-
-/*BasicDataSource basicDataSource = new BasicDataSource();
-basicDataSource.setDriverClassName(driverClassName);
-basicDataSource.setUrl(url);
-basicDataSource.setUsername(username);
-basicDataSource.setPassword(password);
-return basicDataSource;*/

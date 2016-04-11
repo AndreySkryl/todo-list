@@ -29,7 +29,7 @@ public class ColleagueController {
 	@Autowired private ColleagueDAO colleagueDAO;
 	@Autowired private UserDAO userDAO;
 
-	@RequestMapping(value = "/add_colleague", method = RequestMethod.POST)
+	@RequestMapping(value = "/add/one", method = RequestMethod.POST)
 	public int newColleague(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestParam(GUID_OF_COLLEAGUE) String guidOfColleague) {
 		Colleague colleague = new Colleague(guidOfUser, guidOfColleague);
 		try {
@@ -41,7 +41,7 @@ public class ColleagueController {
 		return Response.SC_BAD_REQUEST;
 	}
 
-	@RequestMapping(value = "/add_colleagues", consumes = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/add/many", consumes = "application/json", method = RequestMethod.POST)
 	public int newColleagues(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestBody Collection<String> guidOfColleagues) {
 		List<Colleague> listOfColleague = new ArrayList<>();
 		for (String guidOfColleague : guidOfColleagues) listOfColleague.add(new Colleague(guidOfUser, guidOfColleague));
@@ -54,7 +54,7 @@ public class ColleagueController {
 		return Response.SC_BAD_REQUEST;
 	}
 
-	@RequestMapping(value = "/guides_of_all_colleagues", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value = "/get/all/guides", produces = "application/json", method = RequestMethod.GET)
 	public ResponseEntity<Collection<String>> getGuidOfColleagues(@RequestParam(GUID_OF_USER) String guidOfUser) {
 		try {
 			Collection<String> listOfGuidOfColleagues = colleagueDAO.findGuidOfColleagues(guidOfUser);
@@ -65,7 +65,7 @@ public class ColleagueController {
 		return new ResponseEntity<Collection<String>>(Collections.EMPTY_LIST, HttpStatus.BAD_REQUEST);
 	}
 
-	@RequestMapping(value = "/all_colleagues", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value = "/get/all", produces = "application/json", method = RequestMethod.GET)
 	public ResponseEntity<Collection<User>> getColleagues(@RequestParam(GUID_OF_USER) String guidOfUser) {
 		Collection<String> listOfGuidOfColleagues = getGuidOfColleagues(guidOfUser).getBody();
 		try {
@@ -77,8 +77,8 @@ public class ColleagueController {
 		return new ResponseEntity<Collection<User>>(Collections.EMPTY_LIST, HttpStatus.BAD_REQUEST);
 	}
 
-	@RequestMapping(value = "/delete", produces = "application/json", method = RequestMethod.DELETE)
-	public int delete(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestParam(GUID_OF_COLLEAGUE) String guidOfColleague) {
+	@RequestMapping(value = "/delete/one", produces = "application/json", method = RequestMethod.DELETE)
+	public int deleteOneColleague(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestParam(GUID_OF_COLLEAGUE) String guidOfColleague) {
 		try {
 			colleagueDAO.delete(guidOfUser, guidOfColleague);
 			return Response.SC_OK;
@@ -88,8 +88,8 @@ public class ColleagueController {
 		return Response.SC_BAD_REQUEST;
 	}
 
-	@RequestMapping(value = "/delete_some", consumes = "application/json", method = RequestMethod.DELETE)
-	public int delete(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestBody Collection<String> guidOfColleagues) {
+	@RequestMapping(value = "/delete/some", consumes = "application/json", method = RequestMethod.DELETE)
+	public int deleteSomeColleagues(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestBody Collection<String> guidOfColleagues) {
 		try {
 			colleagueDAO.delete(guidOfUser, guidOfColleagues);
 			return Response.SC_OK;
@@ -97,5 +97,11 @@ public class ColleagueController {
 			System.err.println(exception.getMessage());
 		}
 		return Response.SC_BAD_REQUEST;
+	}
+
+	@RequestMapping(value = "/delete/all", method = RequestMethod.DELETE)
+	public int deleteAllColleagues(@RequestParam(GUID_OF_USER) String guidOfUser) {
+		Collection<String> listOfGuidOfColleagues = colleagueDAO.findGuidOfColleagues(guidOfUser);
+		return deleteSomeColleagues(guidOfUser, listOfGuidOfColleagues);
 	}
 }
