@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 @Component
 public class User implements Serializable {
@@ -99,13 +98,15 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        return String.format(
-            "{\"User\": [\"guid\": \"%s\", \"login\": \"%s\", " +
-            "\"lastName\": \"%s\", \"firstName\": \"%s\", " +
-            "\"password\": \"%s\", \"eMail\": \"%s\", " +
-            "\"createTime\": \"" + simpleDateFormat.format(createTime) + "\", " +
-            "\"updateTime\": \"" + simpleDateFormat.format(updateTime) + "\"]}",
-            guid, login, lastName, firstName, password, eMail, createTime, updateTime);
+        return "User{" +
+                "guid='" + guid + '\'' +
+                ", login='" + login + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", password='" + password + '\'' +
+                ", eMail='" + eMail + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }

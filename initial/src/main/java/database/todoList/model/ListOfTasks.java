@@ -3,7 +3,6 @@ package database.todoList.model;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 @Component
 public class ListOfTasks {
@@ -82,14 +81,14 @@ public class ListOfTasks {
 
     @Override
     public String toString() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        return String.format(
-            "{\"ListOfTasks\": [\"guid\": \"%s\", \"userGuid\": \"%s\", " +
-            "\"favourites\": \"%d\", \"name\": \"%s\", " +
-            "\"description\": \"%s\", " +
-            "\"createTime\": \"" + simpleDateFormat.format(createTime) + "\", " +
-            "\"updateTime\": \"" + simpleDateFormat.format(updateTime) + "\"]}",
-            guid, userGuid, favourites, name, description, createTime, updateTime
-        );
+        return "ListOfTasks{" +
+                "guid='" + guid + '\'' +
+                ", userGuid='" + userGuid + '\'' +
+                ", favourites=" + favourites +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }

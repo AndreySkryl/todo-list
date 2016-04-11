@@ -32,9 +32,9 @@ public class UserAndListOfTasks {
 
     @Override
     public String toString() {
-        return String.format(
-            "{\"UserAndListOfTasks\": [\"userGuid\": \"%s\", \"listOfTasksGuid\": \"%s\"]}",
-            userGuid, listOfTasksGuid
-        );
+        return "UserAndListOfTasks{" +
+                "userGuid='" + userGuid + '\'' +
+                ", listOfTasksGuid='" + listOfTasksGuid + '\'' +
+                '}';
     }
 }

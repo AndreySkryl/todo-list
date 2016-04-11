@@ -14,4 +14,9 @@ public interface UserDAO {
     Collection<User> findAll();
 
     int findTotalUsers();
+
+    void update(String guid, User user);
+
+    void delete(String guid);
+	void delete(Collection<String> guids);
 }

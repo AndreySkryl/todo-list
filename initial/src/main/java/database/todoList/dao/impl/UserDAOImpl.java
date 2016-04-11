@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
-import java.util.List;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -16,50 +15,66 @@ public class UserDAOImpl implements UserDAO {
 	@Autowired(required = false)
     private JdbcTemplate jdbcTemplate;
 
-
+    @Override
     public void insert(User user) {
-        String sql =
-                "INSERT INTO USER " +
-                "(LOGIN, LASTNAME, FIRSTNAME, PASSWORD, EMAIL) " +
-                "VALUES (?, ?, ?, ?, ?)";
-
+        String sql = "INSERT INTO USER (LOGIN, LASTNAME, FIRSTNAME, PASSWORD, EMAIL) VALUES (?, ?, ?, ?, ?);";
         jdbcTemplate.update(sql,
-                user.getLogin(),
-                user.getLastName(), user.getFirstName(),
+                user.getLogin(), user.getLastName(), user.getFirstName(),
                 user.getPassword(), user.geteMail());
     }
 
+    @Override
     public void insertBatch(Collection<User> users) {
-        for (User user : users) {
-            insert(user);
-        }
+        for (User user : users) insert(user);
     }
 
+    @Override
     public void insertBatchSQL(final String sql) {
         jdbcTemplate.batchUpdate(sql);
     }
 
+    @Override
     public User findUserByGuid(String guid) {
-        String sql = "SELECT * FROM USER WHERE GUID = ?";
+        String sql = "SELECT * FROM USER WHERE GUID = ?;";
         User user = jdbcTemplate.queryForObject(sql,  new UserRowMapper(), guid);
         return user;
     }
 
+    @Override
     public String findUserLoginByGuid(String guid) {
-        String sql = "SELECT LOGIN FROM USER WHERE GUID = ?";
+        String sql = "SELECT LOGIN FROM USER WHERE GUID = ?;";
         String login = jdbcTemplate.queryForObject(sql, String.class, guid);
         return login;
     }
 
+    @Override
     public Collection<User> findAll() {
-        String sql = "SELECT * FROM USER";
-        List<User> users = jdbcTemplate.query(sql, new UserRowMapper());
-        return users;
+        String sql = "SELECT * FROM USER;";
+        return jdbcTemplate.query(sql, new UserRowMapper());
     }
 
+    @Override
     public int findTotalUsers() {
-        String sql = "SELECT COUNT(*) FROM USER";
+        String sql = "SELECT COUNT(*) FROM USER;";
         Number number = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
         return (number != null ? number.intValue() : 0);
     }
+
+    @Override
+    public void update(String guidUser, User user) {
+        String sql = "UPDATE USER SET LOGIN = ?, PASSWORD = ?, LASTNAME = ?, FIRSTNAME = ?, EMAIL = ? WHERE GUID = ?;";
+        jdbcTemplate.update(sql,
+				user.getLogin(), user.getPassword(), user.getLastName(), user.getFirstName(), user.geteMail(), guidUser);
+    }
+
+    @Override
+    public void delete(String guid) {
+        String sql = "DELETE FROM USER WHERE GUID = ?;";
+        jdbcTemplate.update(sql, guid);
+    }
+
+	@Override
+	public void delete(Collection<String> guides) {
+		for (String guid : guides) delete(guid);
+	}
 }
