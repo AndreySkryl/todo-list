@@ -19,9 +19,8 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void insert(User user) {
         String sql = "INSERT INTO USER (LOGIN, LASTNAME, FIRSTNAME, PASSWORD, EMAIL) VALUES (?, ?, ?, ?, ?);";
-        jdbcTemplate.update(sql,
-                user.getLogin(), user.getLastName(), user.getFirstName(),
-                user.getPassword(), user.geteMail());
+        jdbcTemplate.update(sql, user.getLogin(), user.getLastName(), user.getFirstName(),
+				user.getPassword(), user.geteMail());
     }
 
     @Override
@@ -37,8 +36,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User findUserByGuid(String guid) {
         String sql = "SELECT * FROM USER WHERE GUID = ?;";
-        User user = jdbcTemplate.queryForObject(sql,  new UserRowMapper(), guid);
-        return user;
+		return jdbcTemplate.queryForObject(sql,  new UserRowMapper(), guid);
     }
 
 	@Override
@@ -67,8 +65,8 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void update(String guidUser, User user) {
         String sql = "UPDATE USER SET LOGIN = ?, PASSWORD = ?, LASTNAME = ?, FIRSTNAME = ?, EMAIL = ? WHERE GUID = ?;";
-        jdbcTemplate.update(sql,
-				user.getLogin(), user.getPassword(), user.getLastName(), user.getFirstName(), user.geteMail(), guidUser);
+        jdbcTemplate.update(sql, user.getLogin(), user.getPassword(), user.getLastName(), user.getFirstName(),
+				user.geteMail(), guidUser);
     }
 
     @Override

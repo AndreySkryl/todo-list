@@ -20,8 +20,8 @@ import java.util.Collections;
 @RequestMapping("/user")
 public class UserController {
 	public static final String GUID_OF_USER = "guidOfUser";
-    @Autowired
-    private UserDAO userDAO;
+
+    @Autowired private UserDAO userDAO;
 
 	@RequestMapping(value = "/add/one", consumes = "application/json", method = RequestMethod.POST)
 	public int newUser(@RequestBody User user) {
@@ -53,7 +53,7 @@ public class UserController {
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return new ResponseEntity<>(new User(), HttpStatus.CONFLICT);
+		return new ResponseEntity<>(new User(), HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value = "/get/all", produces = "application/json", method = RequestMethod.GET)

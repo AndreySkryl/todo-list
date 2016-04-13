@@ -22,23 +22,14 @@ public class ListOfTasksImpl implements ListOfTasksDAO {
 
     @Override
     public void insert(ListOfTasks listOfTasks) {
-        String sql =
-                "INSERT INTO LIST_OF_TASKS " +
-                        "(GUID, USER_GUID, FAVOURITES, NAME, DESCRIPTION, CREATE_TIME, UPDATE_TIME) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        jdbcTemplate.update(sql,
-                listOfTasks.getGuid(), listOfTasks.getUserGuid(),
-                listOfTasks.getFavourites(), listOfTasks.getName(),
-                listOfTasks.getDescription(),
-                listOfTasks.getCreateTime(), listOfTasks.getUpdateTime());
+        String sql = "INSERT INTO LIST_OF_TASKS (USER_GUID, FAVOURITES, NAME, DESCRIPTION) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, listOfTasks.getUserGuid(),
+				listOfTasks.getFavourites(), listOfTasks.getName(), listOfTasks.getDescription());
     }
 
     @Override
     public void insertBatch(Collection<ListOfTasks> listOfTasks) {
-        for (ListOfTasks listOfTask : listOfTasks) {
-            insert(listOfTask);
-        }
+        for (ListOfTasks listOfTask : listOfTasks) insert(listOfTask);
     }
 
     @Override

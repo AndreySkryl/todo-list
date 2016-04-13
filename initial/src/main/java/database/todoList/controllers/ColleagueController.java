@@ -4,7 +4,6 @@ import database.todoList.dao.ColleagueDAO;
 import database.todoList.dao.UserDAO;
 import database.todoList.model.Colleague;
 import database.todoList.model.User;
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -17,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+
+import static java.util.Collections.EMPTY_LIST;
 
 @RestController
 @RequestMapping("/colleague")
@@ -30,28 +30,28 @@ public class ColleagueController {
 	@Autowired private UserDAO userDAO;
 
 	@RequestMapping(value = "/add/one", method = RequestMethod.POST)
-	public int newColleague(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestParam(GUID_OF_COLLEAGUE) String guidOfColleague) {
+	public HttpStatus newColleague(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestParam(GUID_OF_COLLEAGUE) String guidOfColleague) {
 		Colleague colleague = new Colleague(guidOfUser, guidOfColleague);
 		try {
 			colleagueDAO.insert(colleague);
-			return Response.SC_CREATED;
+			return HttpStatus.OK;
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return Response.SC_BAD_REQUEST;
+		return HttpStatus.BAD_REQUEST;
 	}
 
 	@RequestMapping(value = "/add/some", consumes = "application/json", method = RequestMethod.POST)
-	public int newColleagues(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestBody Collection<String> guidOfColleagues) {
+	public HttpStatus newColleagues(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestBody Collection<String> guidOfColleagues) {
 		List<Colleague> listOfColleague = new ArrayList<>();
 		for (String guidOfColleague : guidOfColleagues) listOfColleague.add(new Colleague(guidOfUser, guidOfColleague));
 		try {
 			colleagueDAO.insertBatch(listOfColleague);
-			return Response.SC_OK;
+			return HttpStatus.OK;
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return Response.SC_BAD_REQUEST;
+		return HttpStatus.BAD_REQUEST;
 	}
 
 	@RequestMapping(value = "/get/all/guides", produces = "application/json", method = RequestMethod.GET)
@@ -62,7 +62,7 @@ public class ColleagueController {
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return new ResponseEntity<Collection<String>>(Collections.EMPTY_LIST, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<Collection<String>>(EMPTY_LIST, HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "/get/all", produces = "application/json", method = RequestMethod.GET)
@@ -74,33 +74,33 @@ public class ColleagueController {
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return new ResponseEntity<Collection<User>>(Collections.EMPTY_LIST, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<Collection<User>>(EMPTY_LIST, HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "/delete/one", method = RequestMethod.DELETE)
-	public int deleteOneColleague(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestParam(GUID_OF_COLLEAGUE) String guidOfColleague) {
+	public HttpStatus deleteOneColleague(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestParam(GUID_OF_COLLEAGUE) String guidOfColleague) {
 		try {
 			colleagueDAO.delete(guidOfUser, guidOfColleague);
-			return Response.SC_OK;
+			return HttpStatus.OK;
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return Response.SC_BAD_REQUEST;
+		return HttpStatus.BAD_REQUEST;
 	}
 
 	@RequestMapping(value = "/delete/some", consumes = "application/json", method = RequestMethod.DELETE)
-	public int deleteSomeColleagues(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestBody Collection<String> guidOfColleagues) {
+	public HttpStatus deleteSomeColleagues(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestBody Collection<String> guidOfColleagues) {
 		try {
 			colleagueDAO.delete(guidOfUser, guidOfColleagues);
-			return Response.SC_OK;
+			return HttpStatus.OK;
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return Response.SC_BAD_REQUEST;
+		return HttpStatus.BAD_REQUEST;
 	}
 
 	@RequestMapping(value = "/delete/all", method = RequestMethod.DELETE)
-	public int deleteAllColleagues(@RequestParam(GUID_OF_USER) String guidOfUser) {
+	public HttpStatus deleteAllColleagues(@RequestParam(GUID_OF_USER) String guidOfUser) {
 		Collection<String> listOfGuidOfColleagues = colleagueDAO.findGuidOfColleagues(guidOfUser);
 		return deleteSomeColleagues(guidOfUser, listOfGuidOfColleagues);
 	}
