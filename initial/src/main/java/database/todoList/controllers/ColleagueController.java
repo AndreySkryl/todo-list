@@ -41,7 +41,7 @@ public class ColleagueController {
 		return Response.SC_BAD_REQUEST;
 	}
 
-	@RequestMapping(value = "/add/many", consumes = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/add/some", consumes = "application/json", method = RequestMethod.POST)
 	public int newColleagues(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestBody Collection<String> guidOfColleagues) {
 		List<Colleague> listOfColleague = new ArrayList<>();
 		for (String guidOfColleague : guidOfColleagues) listOfColleague.add(new Colleague(guidOfUser, guidOfColleague));
@@ -77,7 +77,7 @@ public class ColleagueController {
 		return new ResponseEntity<Collection<User>>(Collections.EMPTY_LIST, HttpStatus.BAD_REQUEST);
 	}
 
-	@RequestMapping(value = "/delete/one", produces = "application/json", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/delete/one", method = RequestMethod.DELETE)
 	public int deleteOneColleague(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestParam(GUID_OF_COLLEAGUE) String guidOfColleague) {
 		try {
 			colleagueDAO.delete(guidOfUser, guidOfColleague);
