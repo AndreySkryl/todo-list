@@ -10,8 +10,8 @@ public interface UserAndListOfTasksDAO {
     void insertBatchSQL(String sql);
 
     Collection<UserAndListOfTasks> findUserAndListOfTasksByListOfTasksGuid(String listOfTasksGuid);
-
     Collection<UserAndListOfTasks> findAll();
-
     int findTotalUserAndListOfTasks();
+
+    void updateGuidOfList(String oldGuidOfListOfTasks, String newGuidOfListOfTasks);
 }

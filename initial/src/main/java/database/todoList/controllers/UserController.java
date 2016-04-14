@@ -75,9 +75,9 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/edit/one", consumes = "application/json", method = RequestMethod.PUT)
-	public HttpStatus updateUser(@RequestParam(User.GUID_OF_USER) String guidUser, @RequestBody User user) {
+	public HttpStatus updateUser(@RequestParam(User.GUID_OF_USER) String guidOfUser, @RequestBody User user) {
 		try {
-			userDAO.update(guidUser, user);
+			userDAO.update(guidOfUser, user);
 			return HttpStatus.OK;
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());

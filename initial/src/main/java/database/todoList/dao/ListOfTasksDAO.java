@@ -9,8 +9,11 @@ public interface ListOfTasksDAO {
     void insertBatch(Collection<ListOfTasks> listOfTasks);
     void insertBatchSQL(String sql);
 
-    ListOfTasks findListOfTasksByGuid(String guid);
-    Collection<ListOfTasks> findAll(String guidOfUser);
-
+    ListOfTasks findListOfTasksByGuid(String guidOfListOfTasks);
+    Collection<ListOfTasks> findAll();
     int findTotalListOfTasks();
+
+    void update(String guidOfListOfTasks, String guidOfUser, ListOfTasks listOfTasks);
+
+    void delete(String guidOfListOfTasks);
 }

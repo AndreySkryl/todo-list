@@ -12,7 +12,6 @@ public interface UserDAO {
     User findUserByGuid(String guid);
     Collection<User> find(Collection<String> guides);
     Collection<User> findAll();
-
     int findTotalUsers();
 
     void update(String guid, User user);

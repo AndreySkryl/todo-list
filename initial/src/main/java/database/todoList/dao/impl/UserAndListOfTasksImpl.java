@@ -22,7 +22,7 @@ public class UserAndListOfTasksImpl implements UserAndListOfTasksDAO {
 
     @Override
     public void insertBatch(Collection<UserAndListOfTasks> listOfUserAndListOfTasks) {
-        for (UserAndListOfTasks userAndListOfTasks : listOfUserAndListOfTasks)
+		for (UserAndListOfTasks userAndListOfTasks : listOfUserAndListOfTasks)
 			insert(userAndListOfTasks);
     }
 
@@ -43,10 +43,16 @@ public class UserAndListOfTasksImpl implements UserAndListOfTasksDAO {
 		return jdbcTemplate.query(sql, new UserAndListOfTasksRowMapper());
     }
 
-    @Override
-    public int findTotalUserAndListOfTasks() {
-        String sql = "SELECT COUNT(*) FROM USER__LIST_OF_TASKS";
-        Number number = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
-        return (number != null ? number.intValue() : 0);
-    }
+	@Override
+	public int findTotalUserAndListOfTasks() {
+		String sql = "SELECT COUNT(*) FROM USER__LIST_OF_TASKS";
+		Number number = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
+		return (number != null ? number.intValue() : 0);
+	}
+
+	@Override
+	public void updateGuidOfList(String oldGuidOfListOfTasks, String newGuidOfListOfTasks) {
+		String sql = "UPDATE USER__LIST_OF_TASKS SET LIST_OF_TASKS_GUID = ? WHERE LIST_OF_TASKS_GUID = ?;";
+		jdbcTemplate.update(sql, newGuidOfListOfTasks, oldGuidOfListOfTasks);
+	}
 }

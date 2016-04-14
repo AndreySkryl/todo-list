@@ -18,30 +18,13 @@ public class ListOfTasksImpl implements ListOfTasksDAO {
     @Override
     public String insert(final ListOfTasks listOfTasks) {
 		String guidOfListOfTasks = UUID.randomUUID().toString();
+		if (listOfTasks.getGuid() != null) guidOfListOfTasks = listOfTasks.getGuid();
 
-        String sql = "INSERT INTO LIST_OF_TASKS (GUID, USER_GUID, FAVOURITES, NAME, DESCRIPTION) VALUES (?, ?, ?, ?);";
+        String sql = "INSERT INTO LIST_OF_TASKS (GUID, USER_GUID, FAVOURITES, NAME, DESCRIPTION) VALUES (?, ?, ?, ?, ?);";
 		jdbcTemplate.update(sql, guidOfListOfTasks, listOfTasks.getUserGuid(),
 				listOfTasks.getFavourites(), listOfTasks.getName(), listOfTasks.getDescription());
 
 		return guidOfListOfTasks;
-		/*KeyHolder keyHolder = new GeneratedKeyHolder();
-
-		jdbcTemplate.update(new PreparedStatementCreator() {
-			@Override
-			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				//PreparedStatement ps = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
-				PreparedStatement ps = connection.prepareStatement(
-						"INSERT INTO LIST_OF_TASKS (USER_GUID, FAVOURITES, NAME, DESCRIPTION) VALUES (?, ?, ?, ?);",
-						new String[]{"USER_GUID"}); //Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, listOfTasks.getUserGuid());
-				ps.setInt(2, listOfTasks.getFavourites());
-				ps.setString(3, listOfTasks.getName());
-				ps.setString(4, listOfTasks.getDescription());
-				return ps;
-			}
-		}, keyHolder);
-
-		return keyHolder.getKey().toString();*/
     }
 
     @Override
@@ -55,16 +38,15 @@ public class ListOfTasksImpl implements ListOfTasksDAO {
     }
 
     @Override
-    public ListOfTasks findListOfTasksByGuid(String guid) {
-        String sql = "SELECT * FROM LIST_OF_TASKS WHERE USER_GUID = ?;";
-		return jdbcTemplate.queryForObject(sql, new ListOfTasksRowMapper(), guid);
+    public ListOfTasks findListOfTasksByGuid(String guidOfListOfTasks) {
+        String sql = "SELECT * FROM LIST_OF_TASKS WHERE GUID = ?;";
+		return jdbcTemplate.queryForObject(sql, new ListOfTasksRowMapper(), guidOfListOfTasks);
     }
 
 	@Override
-	public Collection<ListOfTasks> findAll(String guidOfUser) {
-		throw new RuntimeException("123");
-//		String sql = "SELECT LIST_OF_TASKS.* FROM LIST_OF_TASKS INNER JOIN ;
-//		return jdbcTemplate.query(sql, new ListOfTasksRowMapper());
+	public Collection<ListOfTasks> findAll() {
+		String sql = "SELECT * FROM LIST_OF_TASKS;";
+		return jdbcTemplate.query(sql, new ListOfTasksRowMapper());
 	}
 
     @Override
@@ -73,4 +55,27 @@ public class ListOfTasksImpl implements ListOfTasksDAO {
         Number number = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
         return (number != null ? number.intValue() : 0);
     }
+
+	@Override
+	public void update(String guidOfListOfTasks, String guidOfUser, ListOfTasks listOfTasks) {
+		String guidOfNewListOfTasks = insert(listOfTasks);
+
+		String sql2 = "UPDATE USER__LIST_OF_TASKS SET USER_GUID = ?, LIST_OF_TASKS_GUID = ? WHERE USER_GUID = ? AND LIST_OF_TASKS_GUID = ?;";
+		jdbcTemplate.update(sql2, listOfTasks.getUserGuid(), guidOfNewListOfTasks, guidOfUser, guidOfListOfTasks);
+
+		delete(guidOfListOfTasks);
+		/*String sql = "UPDATE LIST_OF_TASKS SET GUID = ?, USER_GUID = ?, FAVOURITES = ?, NAME = ?, DESCRIPTION = ? WHERE GUID = ?;";
+		jdbcTemplate.update(sql, listOfTasks.getGuid(), listOfTasks.getUserGuid(),
+				listOfTasks.getFavourites(), listOfTasks.getName(), listOfTasks.getDescription(),
+				guidOfListOfTasks);*/
+
+		/*String sql2 = "UPDATE USER__LIST_OF_TASKS SET USER_GUID = ?, LIST_OF_TASKS_GUID = ? WHERE USER_GUID = ? AND LIST_OF_TASKS_GUID = ?;";
+		jdbcTemplate.update(sql2, listOfTasks.getUserGuid(), listOfTasks.getGuid(), guidOfUser, guidOfListOfTasks);*/
+	}
+
+	@Override
+	public void delete(String guidOfListOfTasks) {
+		String sql = "DELETE FROM LIST_OF_TASKS WHERE GUID = ?;";
+		jdbcTemplate.update(sql, guidOfListOfTasks);
+	}
 }

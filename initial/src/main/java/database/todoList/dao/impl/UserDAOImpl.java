@@ -62,10 +62,10 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void update(String guidUser, User user) {
+    public void update(String guidOfUser, User user) {
         String sql = "UPDATE USER SET LOGIN = ?, PASSWORD = ?, LASTNAME = ?, FIRSTNAME = ?, EMAIL = ? WHERE GUID = ?;";
         jdbcTemplate.update(sql, user.getLogin(), user.getPassword(), user.getLastName(), user.getFirstName(),
-				user.geteMail(), guidUser);
+				user.geteMail(), guidOfUser);
     }
 
     @Override
