@@ -7,6 +7,8 @@ import java.sql.Timestamp;
 
 @Component
 public class User implements Serializable {
+    public static final String GUID_OF_USER = "guidOfUser";
+
     String guid;
     String login;
     String lastName;

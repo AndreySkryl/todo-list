@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 
 @Component
 public class ListOfTasks {
+    public static final String GUID_OF_LIST_Of_TASKS = "guidOfListOfTasks";
+
     String guid;
     String userGuid;
     int favourites;

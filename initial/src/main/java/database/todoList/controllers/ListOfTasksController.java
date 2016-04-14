@@ -1,8 +1,10 @@
 package database.todoList.controllers;
 
 import database.todoList.dao.ListOfTasksDAO;
+import database.todoList.dao.UserAndListOfTasksDAO;
 import database.todoList.model.ListOfTasks;
-import org.apache.catalina.connector.Response;
+import database.todoList.model.User;
+import database.todoList.model.UserAndListOfTasks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -15,43 +17,56 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 
+import static java.util.Collections.EMPTY_LIST;
+
 @RestController
 @RequestMapping("/list_of_tasks")
 public class ListOfTasksController {
-	public static final String GUID_OF_LIST_Of_TASKS = "guidOfListOfTasks";
-
 	@Autowired private ListOfTasksDAO listOfTasksDAO;
+	@Autowired private UserAndListOfTasksDAO userAndListOfTasksDAO;
 
 	@RequestMapping(value = "/add/one", consumes = "application/json", method = RequestMethod.POST)
-	public int newListOfTasks(@RequestBody ListOfTasks listOfTasks) {
+	public HttpStatus newListOfTasks(@RequestBody ListOfTasks listOfTasks) {
 		try {
-			listOfTasksDAO.insert(listOfTasks);
-			return Response.SC_OK;
+			String guidOfListOfTasks = listOfTasksDAO.insert(listOfTasks);
+			userAndListOfTasksDAO.insert(new UserAndListOfTasks(listOfTasks.getUserGuid(), guidOfListOfTasks));
+			return HttpStatus.OK; // Response.SC_OK;
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return Response.SC_BAD_REQUEST;
+		return HttpStatus.BAD_REQUEST;
 	}
 
 	@RequestMapping(value = "/add/some", consumes = "application/json", method = RequestMethod.POST)
-	public int newListsOfTasks(@RequestBody Collection<ListOfTasks> listOfTasksCollection) {
+	public HttpStatus newListsOfTasks(@RequestBody Collection<ListOfTasks> listOfTasksCollection) {
 		try {
 			listOfTasksDAO.insertBatch(listOfTasksCollection);
-			return Response.SC_CREATED;
+			return HttpStatus.CREATED;
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return Response.SC_CONFLICT;
+		return HttpStatus.BAD_REQUEST;
 	}
 
 	@RequestMapping(value = "/get/one", produces = "application/json", method = RequestMethod.GET)
-	public ResponseEntity<ListOfTasks> getListOfTasks(@RequestParam(GUID_OF_LIST_Of_TASKS) String guid) {
+	public ResponseEntity<ListOfTasks> getListOfTasks(@RequestParam(ListOfTasks.GUID_OF_LIST_Of_TASKS) String guid) {
 		try {
 			ListOfTasks listOfTasks = listOfTasksDAO.findListOfTasksByGuid(guid);
 			return new ResponseEntity<>(listOfTasks, HttpStatus.OK);
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return new ResponseEntity<>(new ListOfTasks(), HttpStatus.CONFLICT);
+		return new ResponseEntity<>(new ListOfTasks(), HttpStatus.BAD_REQUEST);
+	}
+
+	@RequestMapping(value = "/get/all", produces = "application/json", method = RequestMethod.GET)
+	public ResponseEntity<Collection<ListOfTasks>> getAllListOfTasks(@RequestParam(User.GUID_OF_USER) String guidOfUser) {
+		try {
+			Collection<ListOfTasks> listOfTasksCollection = listOfTasksDAO.findAll(guidOfUser);
+			return new ResponseEntity<>(listOfTasksCollection, HttpStatus.OK);
+		} catch (DataAccessException exception) {
+			System.err.println(exception.getMessage());
+		}
+		return new ResponseEntity<Collection<ListOfTasks>>(EMPTY_LIST, HttpStatus.BAD_REQUEST);
 	}
 }

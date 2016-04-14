@@ -12,7 +12,6 @@ import java.util.Collection;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
-
 	@Autowired(required = false)
     private JdbcTemplate jdbcTemplate;
 

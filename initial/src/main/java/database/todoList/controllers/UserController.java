@@ -2,7 +2,6 @@ package database.todoList.controllers;
 
 import database.todoList.dao.UserDAO;
 import database.todoList.model.User;
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -14,39 +13,38 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.Collections;
+
+import static java.util.Collections.EMPTY_LIST;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
-	public static final String GUID_OF_USER = "guidOfUser";
-
     @Autowired private UserDAO userDAO;
 
 	@RequestMapping(value = "/add/one", consumes = "application/json", method = RequestMethod.POST)
-	public int newUser(@RequestBody User user) {
+	public HttpStatus newUser(@RequestBody User user) {
 		try {
 			userDAO.insert(user);
-			return Response.SC_CREATED;
+			return HttpStatus.CREATED;
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return Response.SC_CONFLICT;
+		return HttpStatus.BAD_REQUEST;
 	}
 
 	@RequestMapping(value = "/add/some", consumes = "application/json", method = RequestMethod.POST)
-	public int newUsers(@RequestBody Collection<User> users) {
+	public HttpStatus newUsers(@RequestBody Collection<User> users) {
 		try {
 			userDAO.insertBatch(users);
-			return Response.SC_CREATED;
+			return HttpStatus.CREATED;
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return Response.SC_CONFLICT;
+		return HttpStatus.BAD_REQUEST;
 	}
 
 	@RequestMapping(value = "/get/one", produces = "application/json", method = RequestMethod.GET)
-    public ResponseEntity<User> getUser(@RequestParam(GUID_OF_USER) String guid) {
+    public ResponseEntity<User> getUser(@RequestParam(User.GUID_OF_USER) String guid) {
 		try {
 			User user = userDAO.findUserByGuid(guid);
 			return new ResponseEntity<>(user, HttpStatus.OK);
@@ -63,7 +61,7 @@ public class UserController {
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return new ResponseEntity<Collection<User>>(Collections.EMPTY_LIST, HttpStatus.CONFLICT);
+		return new ResponseEntity<Collection<User>>(EMPTY_LIST, HttpStatus.BAD_REQUEST);
     }
 
 	@RequestMapping(value = "/get/all/count", produces = "application/json", method = RequestMethod.GET)
@@ -73,39 +71,39 @@ public class UserController {
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return new ResponseEntity<>(0, HttpStatus.CONFLICT);
+		return new ResponseEntity<>(0, HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "/edit/one", consumes = "application/json", method = RequestMethod.PUT)
-	public int updateUser(@RequestParam(GUID_OF_USER) String guidUser, @RequestBody User user) {
+	public HttpStatus updateUser(@RequestParam(User.GUID_OF_USER) String guidUser, @RequestBody User user) {
 		try {
 			userDAO.update(guidUser, user);
-			return Response.SC_OK;
+			return HttpStatus.OK;
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return Response.SC_CONFLICT;
+		return HttpStatus.BAD_REQUEST;
 	}
 
 	@RequestMapping(value = "/delete/one", method = RequestMethod.DELETE)
-	public int deleteUser(@RequestParam(GUID_OF_USER) String guid) {
+	public HttpStatus deleteUser(@RequestParam(User.GUID_OF_USER) String guid) {
 		try {
 			userDAO.delete(guid);
-			return Response.SC_OK;
+			return HttpStatus.OK;
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return Response.SC_CONFLICT;
+		return HttpStatus.BAD_REQUEST;
 	}
 
 	@RequestMapping(value = "/delete/some", consumes = "application/json", method = RequestMethod.DELETE)
-	public int deleteUsers(@RequestBody Collection<String> guides) {
+	public HttpStatus deleteUsers(@RequestBody Collection<String> guides) {
 		try {
 			userDAO.delete(guides);
-			return Response.SC_OK;
+			return HttpStatus.OK;
 		} catch (DataAccessException exception) {
 			System.err.println(exception.getMessage());
 		}
-		return Response.SC_CONFLICT;
+		return HttpStatus.BAD_REQUEST;
 	}
 }

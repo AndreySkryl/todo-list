@@ -23,14 +23,12 @@ import static java.util.Collections.EMPTY_LIST;
 @RestController
 @RequestMapping("/colleague")
 public class ColleagueController {
-	public static final String GUID_OF_USER = "guidOfUser";
-	public static final String GUID_OF_COLLEAGUE = "guidOfColleague";
-
 	@Autowired private ColleagueDAO colleagueDAO;
 	@Autowired private UserDAO userDAO;
 
 	@RequestMapping(value = "/add/one", method = RequestMethod.POST)
-	public HttpStatus newColleague(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestParam(GUID_OF_COLLEAGUE) String guidOfColleague) {
+	public HttpStatus newColleague(@RequestParam(User.GUID_OF_USER) String guidOfUser,
+								   @RequestParam(Colleague.GUID_OF_COLLEAGUE) String guidOfColleague) {
 		Colleague colleague = new Colleague(guidOfUser, guidOfColleague);
 		try {
 			colleagueDAO.insert(colleague);
@@ -42,7 +40,8 @@ public class ColleagueController {
 	}
 
 	@RequestMapping(value = "/add/some", consumes = "application/json", method = RequestMethod.POST)
-	public HttpStatus newColleagues(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestBody Collection<String> guidOfColleagues) {
+	public HttpStatus newColleagues(@RequestParam(User.GUID_OF_USER) String guidOfUser,
+									@RequestBody Collection<String> guidOfColleagues) {
 		List<Colleague> listOfColleague = new ArrayList<>();
 		for (String guidOfColleague : guidOfColleagues) listOfColleague.add(new Colleague(guidOfUser, guidOfColleague));
 		try {
@@ -55,7 +54,7 @@ public class ColleagueController {
 	}
 
 	@RequestMapping(value = "/get/all/guides", produces = "application/json", method = RequestMethod.GET)
-	public ResponseEntity<Collection<String>> getGuidOfColleagues(@RequestParam(GUID_OF_USER) String guidOfUser) {
+	public ResponseEntity<Collection<String>> getGuidOfColleagues(@RequestParam(User.GUID_OF_USER) String guidOfUser) {
 		try {
 			Collection<String> listOfGuidOfColleagues = colleagueDAO.findGuidOfColleagues(guidOfUser);
 			return new ResponseEntity<>(listOfGuidOfColleagues, HttpStatus.OK);
@@ -66,7 +65,7 @@ public class ColleagueController {
 	}
 
 	@RequestMapping(value = "/get/all", produces = "application/json", method = RequestMethod.GET)
-	public ResponseEntity<Collection<User>> getColleagues(@RequestParam(GUID_OF_USER) String guidOfUser) {
+	public ResponseEntity<Collection<User>> getColleagues(@RequestParam(User.GUID_OF_USER) String guidOfUser) {
 		Collection<String> listOfGuidOfColleagues = getGuidOfColleagues(guidOfUser).getBody();
 		try {
 			Collection<User> listOfColleagues = userDAO.find(listOfGuidOfColleagues);
@@ -78,7 +77,8 @@ public class ColleagueController {
 	}
 
 	@RequestMapping(value = "/delete/one", method = RequestMethod.DELETE)
-	public HttpStatus deleteOneColleague(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestParam(GUID_OF_COLLEAGUE) String guidOfColleague) {
+	public HttpStatus deleteOneColleague(@RequestParam(User.GUID_OF_USER) String guidOfUser,
+										 @RequestParam(Colleague.GUID_OF_COLLEAGUE) String guidOfColleague) {
 		try {
 			colleagueDAO.delete(guidOfUser, guidOfColleague);
 			return HttpStatus.OK;
@@ -89,7 +89,7 @@ public class ColleagueController {
 	}
 
 	@RequestMapping(value = "/delete/some", consumes = "application/json", method = RequestMethod.DELETE)
-	public HttpStatus deleteSomeColleagues(@RequestParam(GUID_OF_USER) String guidOfUser, @RequestBody Collection<String> guidOfColleagues) {
+	public HttpStatus deleteSomeColleagues(@RequestParam(User.GUID_OF_USER) String guidOfUser, @RequestBody Collection<String> guidOfColleagues) {
 		try {
 			colleagueDAO.delete(guidOfUser, guidOfColleagues);
 			return HttpStatus.OK;
@@ -100,7 +100,7 @@ public class ColleagueController {
 	}
 
 	@RequestMapping(value = "/delete/all", method = RequestMethod.DELETE)
-	public HttpStatus deleteAllColleagues(@RequestParam(GUID_OF_USER) String guidOfUser) {
+	public HttpStatus deleteAllColleagues(@RequestParam(User.GUID_OF_USER) String guidOfUser) {
 		Collection<String> listOfGuidOfColleagues = colleagueDAO.findGuidOfColleagues(guidOfUser);
 		return deleteSomeColleagues(guidOfUser, listOfGuidOfColleagues);
 	}

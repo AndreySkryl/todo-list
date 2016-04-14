@@ -7,24 +7,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.util.Collection;
-import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class ListOfTasksImpl implements ListOfTasksDAO {
-    private JdbcTemplate jdbcTemplate;
-
-    @Autowired(required = false)
-    public void setDataSource(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
+	@Autowired(required = false)
+	private JdbcTemplate jdbcTemplate;
 
     @Override
-    public void insert(ListOfTasks listOfTasks) {
-        String sql = "INSERT INTO LIST_OF_TASKS (USER_GUID, FAVOURITES, NAME, DESCRIPTION) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, listOfTasks.getUserGuid(),
+    public String insert(final ListOfTasks listOfTasks) {
+		String guidOfListOfTasks = UUID.randomUUID().toString();
+
+        String sql = "INSERT INTO LIST_OF_TASKS (GUID, USER_GUID, FAVOURITES, NAME, DESCRIPTION) VALUES (?, ?, ?, ?);";
+		jdbcTemplate.update(sql, guidOfListOfTasks, listOfTasks.getUserGuid(),
 				listOfTasks.getFavourites(), listOfTasks.getName(), listOfTasks.getDescription());
+
+		return guidOfListOfTasks;
+		/*KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				//PreparedStatement ps = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = connection.prepareStatement(
+						"INSERT INTO LIST_OF_TASKS (USER_GUID, FAVOURITES, NAME, DESCRIPTION) VALUES (?, ?, ?, ?);",
+						new String[]{"USER_GUID"}); //Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, listOfTasks.getUserGuid());
+				ps.setInt(2, listOfTasks.getFavourites());
+				ps.setString(3, listOfTasks.getName());
+				ps.setString(4, listOfTasks.getDescription());
+				return ps;
+			}
+		}, keyHolder);
+
+		return keyHolder.getKey().toString();*/
     }
 
     @Override
@@ -39,21 +56,20 @@ public class ListOfTasksImpl implements ListOfTasksDAO {
 
     @Override
     public ListOfTasks findListOfTasksByGuid(String guid) {
-        String sql = "SELECT * FROM COLLEAGUE WHERE USER_GUID = ?";
-        ListOfTasks list = jdbcTemplate.queryForObject(sql, new ListOfTasksRowMapper(), guid);
-        return list;
+        String sql = "SELECT * FROM LIST_OF_TASKS WHERE USER_GUID = ?;";
+		return jdbcTemplate.queryForObject(sql, new ListOfTasksRowMapper(), guid);
     }
 
-    @Override
-    public Collection<ListOfTasks> findAll() {
-        String sql = "SELECT * FROM COLLEAGUE";
-        List<ListOfTasks> allListOfTasks = jdbcTemplate.query(sql, new ListOfTasksRowMapper());
-        return allListOfTasks;
-    }
+	@Override
+	public Collection<ListOfTasks> findAll(String guidOfUser) {
+		throw new RuntimeException("123");
+//		String sql = "SELECT LIST_OF_TASKS.* FROM LIST_OF_TASKS INNER JOIN ;
+//		return jdbcTemplate.query(sql, new ListOfTasksRowMapper());
+	}
 
     @Override
     public int findTotalListOfTasks() {
-        String sql = "SELECT COUNT(*) FROM LIST_OF_TASKS";
+        String sql = "SELECT COUNT(*) FROM LIST_OF_TASKS;";
         Number number = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
         return (number != null ? number.intValue() : 0);
     }

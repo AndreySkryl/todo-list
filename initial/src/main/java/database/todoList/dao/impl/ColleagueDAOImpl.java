@@ -8,19 +8,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 
 @Repository
 public class ColleagueDAOImpl implements ColleagueDAO {
-    private JdbcTemplate jdbcTemplate;
-
-    @Autowired(required = false)
-    public void setDataSource(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
+	@Autowired(required = false)
+	private JdbcTemplate jdbcTemplate;
 
     @Override
     public void insert(Colleague colleague) {

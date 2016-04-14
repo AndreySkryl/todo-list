@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 
 @Component
 public class Colleague {
+    public static final String GUID_OF_COLLEAGUE = "guidOfColleague";
+
     String userGuid;
     String colleagueGuid;
     Timestamp createTime;
