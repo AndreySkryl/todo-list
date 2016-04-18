@@ -1,7 +1,6 @@
 package database.todoList.dao.impl;
 
 import database.todoList.dao.ColleagueDAO;
-import database.todoList.mappers.ColleagueRowMapper;
 import database.todoList.model.Colleague;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,7 +16,13 @@ public class ColleagueDAOImpl implements ColleagueDAO {
 	@Autowired(required = false)
 	private JdbcTemplate jdbcTemplate;
 
-    @Override
+	@Override
+	public void insert(String guidOfColleague_1, String guidOfColleague_2) {
+		String sql = "INSERT INTO COLLEAGUE (USER_GUID, COLLEAGUE_GUID) VALUES (?, ?);";
+		jdbcTemplate.update(sql, guidOfColleague_1, guidOfColleague_2);
+	}
+
+	@Override
     public void insert(Colleague colleague) {
         String sql = "INSERT INTO COLLEAGUE (USER_GUID, COLLEAGUE_GUID) VALUES (?, ?);";
         jdbcTemplate.update(sql, colleague.getUserGuid(), colleague.getColleagueGuid());
@@ -34,7 +39,7 @@ public class ColleagueDAOImpl implements ColleagueDAO {
     }
 
     @Override
-    public Collection<String> findGuidOfColleagues(String userGuid) {
+    public Collection<String> findGuidesOfColleagues(String userGuid) {
         String sql = "SELECT COLLEAGUE_GUID FROM COLLEAGUE WHERE USER_GUID = ?;";
         return jdbcTemplate.query(sql, new RowMapper<String>() {
 			@Override
@@ -42,25 +47,6 @@ public class ColleagueDAOImpl implements ColleagueDAO {
 				return resultSet.getString("COLLEAGUE_GUID");
 			}
 		}, userGuid);
-    }
-
-    @Override
-    public Collection<Colleague> findColleaguesByUserGuid(String userGuid) {
-        String sql = "SELECT * FROM COLLEAGUE WHERE USER_GUID = ?;";
-        return jdbcTemplate.query(sql, new ColleagueRowMapper(), userGuid);
-    }
-
-    @Override
-    public Collection<Colleague> findAll() {
-        String sql = "SELECT * FROM COLLEAGUE;";
-        return jdbcTemplate.query(sql, new ColleagueRowMapper());
-    }
-
-    @Override
-    public int findTotalColleague() {
-        String sql = "SELECT COUNT(*) FROM COLLEAGUE;";
-        Number number = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
-        return (number != null ? number.intValue() : 0);
     }
 
 	@Override

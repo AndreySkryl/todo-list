@@ -9,6 +9,7 @@ public interface UserService {
 	void insertUsers(Collection<User> users);
 
 	User findUserByGuid(String guid);
+	Collection<User> findUsersByGuid(Collection<String> guides);
 	Collection<User> findAllUsers();
 	int findCountOfUsers();
 

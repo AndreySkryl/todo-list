@@ -39,7 +39,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
 	@Override
-	public Collection<User> find(Collection<String> guides) {
+	public Collection<User> findUsersByGuid(Collection<String> guides) {
 		Collection<User> listOfUser = new ArrayList<>();
 		for (String guid : guides) {
 			User user = findUserByGuid(guid);

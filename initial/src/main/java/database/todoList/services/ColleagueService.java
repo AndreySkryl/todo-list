@@ -1,19 +1,14 @@
 package database.todoList.services;
 
-import database.todoList.model.Colleague;
-
 import java.util.Collection;
 
 public interface ColleagueService {
-	void insert(Colleague colleague);
-	void insertBatch(Collection<Colleague> colleagues);
-	void insertBatchSQL(String sql);
+	void insertConnectionBetweenColleagues(String guidOfColleague_1, String guidOfColleague_2);
+	void insertConnectionBetweenColleagues(String guidOfColleague_1, Collection<String> listOfGuidOfColleagues);
 
-	Collection<String> findGuidOfColleagues(String userGuid);
-	Collection<Colleague> findColleaguesByUserGuid(String userGuid);
-	Collection<Colleague> findAll();
-	int findTotalColleague();
+	Collection<String> findGuidesOfColleaguesByUserGuid(String userGuid);
 
-	void delete(String userGuid, String guidOfColleague);
-	void delete(String userGuid, Collection<String> guidOfColleagues);
+	void deleteConnectionBetweenColleagues(String guidOfColleague_1, String guidOfColleague_2);
+	void deleteConnectionBetweenColleagues(String guidOfColleague_1, Collection<String> listOfGuidOfColleague);
+	void deleteConnectionsWithAllColleagues(String guidOfUser);
 }

@@ -44,6 +44,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public Collection<User> findUsersByGuid(Collection<String> guides) {
+		for (String guid : guides)
+			if (guid == null) throw new IllegalArgumentException();
+
+		Collection<User> users = userDAO.findUsersByGuid(guides);
+		if (users == null) throw new NullPointerException(NO_FOUND_USER_WITH_THE_GUID);
+		else return users;
+	}
+
+	@Override
 	public Collection<User> findAllUsers() {
 		Collection<User> users = userDAO.findAll();
 		if (users != null) return users;
