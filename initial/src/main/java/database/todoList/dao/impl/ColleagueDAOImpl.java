@@ -39,8 +39,7 @@ public class ColleagueDAOImpl implements ColleagueDAO {
         return jdbcTemplate.query(sql, new RowMapper<String>() {
 			@Override
 			public String mapRow(ResultSet resultSet, int i) throws SQLException {
-				String colleagueGuid = resultSet.getString("COLLEAGUE_GUID");
-				return colleagueGuid;
+				return resultSet.getString("COLLEAGUE_GUID");
 			}
 		}, userGuid);
     }

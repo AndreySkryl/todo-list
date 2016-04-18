@@ -12,7 +12,7 @@ public interface UserDAO {
     User findUserByGuid(String guid);
     Collection<User> find(Collection<String> guides);
     Collection<User> findAll();
-    int findTotalUsers();
+    int findCountOfUsers();
 
     void update(String guid, User user);
 

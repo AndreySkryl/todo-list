@@ -13,7 +13,9 @@ public interface ListOfTasksDAO {
     Collection<ListOfTasks> findAll();
     int findTotalListOfTasks();
 
-    void update(String guidOfListOfTasks, String guidOfUser, ListOfTasks listOfTasks);
+    String findGuidOfOwner(String guidOfListOfTasks);
+
+    void update(String oldGuidOfListOfTasks, ListOfTasks listOfTasks);
 
     void delete(String guidOfListOfTasks);
 }

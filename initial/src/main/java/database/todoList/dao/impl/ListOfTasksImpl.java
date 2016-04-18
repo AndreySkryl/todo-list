@@ -5,8 +5,11 @@ import database.todoList.mappers.ListOfTasksRowMapper;
 import database.todoList.model.ListOfTasks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -16,7 +19,7 @@ public class ListOfTasksImpl implements ListOfTasksDAO {
 	private JdbcTemplate jdbcTemplate;
 
     @Override
-    public String insert(final ListOfTasks listOfTasks) {
+    public String insert(ListOfTasks listOfTasks) {
 		String guidOfListOfTasks = UUID.randomUUID().toString();
 		if (listOfTasks.getGuid() != null) guidOfListOfTasks = listOfTasks.getGuid();
 
@@ -57,20 +60,21 @@ public class ListOfTasksImpl implements ListOfTasksDAO {
     }
 
 	@Override
-	public void update(String guidOfListOfTasks, String guidOfUser, ListOfTasks listOfTasks) {
-		String guidOfNewListOfTasks = insert(listOfTasks);
+	public String findGuidOfOwner(String guidOfListOfTasks) {
+		String sqlSelectOwnerForListOfTasks = "SELECT USER_GUID FROM LIST_OF_TASKS WHERE GUID = ?;";
+		return String.valueOf(jdbcTemplate.query(sqlSelectOwnerForListOfTasks, new RowMapper<String>() {
+			@Override
+			public String mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+				return resultSet.getString("USER_GUID");
+			}
+		}, guidOfListOfTasks));
+	}
 
-		String sql2 = "UPDATE USER__LIST_OF_TASKS SET USER_GUID = ?, LIST_OF_TASKS_GUID = ? WHERE USER_GUID = ? AND LIST_OF_TASKS_GUID = ?;";
-		jdbcTemplate.update(sql2, listOfTasks.getUserGuid(), guidOfNewListOfTasks, guidOfUser, guidOfListOfTasks);
-
-		delete(guidOfListOfTasks);
-		/*String sql = "UPDATE LIST_OF_TASKS SET GUID = ?, USER_GUID = ?, FAVOURITES = ?, NAME = ?, DESCRIPTION = ? WHERE GUID = ?;";
-		jdbcTemplate.update(sql, listOfTasks.getGuid(), listOfTasks.getUserGuid(),
-				listOfTasks.getFavourites(), listOfTasks.getName(), listOfTasks.getDescription(),
-				guidOfListOfTasks);*/
-
-		/*String sql2 = "UPDATE USER__LIST_OF_TASKS SET USER_GUID = ?, LIST_OF_TASKS_GUID = ? WHERE USER_GUID = ? AND LIST_OF_TASKS_GUID = ?;";
-		jdbcTemplate.update(sql2, listOfTasks.getUserGuid(), listOfTasks.getGuid(), guidOfUser, guidOfListOfTasks);*/
+	@Override
+	public void update(String oldGuidOfListOfTasks, ListOfTasks listOfTasks) {
+		String sql = "UPDATE LIST_OF_TASKS SET GUID = ?, USER_GUID = ?, FAVOURITES = ?, NAME = ?, DESCRIPTION = ? WHERE GUID = ?;";
+		jdbcTemplate.update(sql, listOfTasks.getGuid(), listOfTasks.getUserGuid(), listOfTasks.getFavourites(),
+				listOfTasks.getName(), listOfTasks.getDescription(), oldGuidOfListOfTasks);
 	}
 
 	@Override

@@ -3,8 +3,8 @@ package database.todoList.controllers;
 import database.todoList.dao.ListOfTasksDAO;
 import database.todoList.dao.UserAndListOfTasksDAO;
 import database.todoList.model.ListOfTasks;
-import database.todoList.model.User;
 import database.todoList.model.UserAndListOfTasks;
+import database.todoList.services.ListOfTasksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -24,6 +24,8 @@ import static java.util.Collections.EMPTY_LIST;
 public class ListOfTasksController {
 	@Autowired private ListOfTasksDAO listOfTasksDAO;
 	@Autowired private UserAndListOfTasksDAO userAndListOfTasksDAO;
+
+	@Autowired private ListOfTasksService listOfTasksService;
 
 	@RequestMapping(value = "/add/one", consumes = "application/json", method = RequestMethod.POST)
 	public HttpStatus newListOfTasks(@RequestBody ListOfTasks listOfTasks) {
@@ -73,7 +75,7 @@ public class ListOfTasksController {
 		return new ResponseEntity<Collection<ListOfTasks>>(EMPTY_LIST, HttpStatus.BAD_REQUEST);
 	}
 
-	@RequestMapping(value = "/edit/one", consumes = "application/json", method = RequestMethod.PUT)
+	/*@RequestMapping(value = "/edit/one", consumes = "application/json", method = RequestMethod.PUT)
 	public HttpStatus updateListOfTasks(@RequestParam(ListOfTasks.GUID_OF_LIST_Of_TASKS) String guidOfListOfTasks,
 										@RequestParam(User.GUID_OF_USER) String guidOfUser,
 										@RequestBody ListOfTasks listOfTasks) {
@@ -86,4 +88,15 @@ public class ListOfTasksController {
 		}
 		return HttpStatus.BAD_REQUEST;
 	}
+
+	//@Transactional
+	@RequestMapping(value = "/delete/one", method = RequestMethod.DELETE)
+	public HttpStatus deleteListOfTasks(@RequestParam(ListOfTasks.GUID_OF_LIST_Of_TASKS) String guidOfListOfTasks,
+								 		@RequestParam(User.GUID_OF_USER) String guidOfUser) {
+		try {
+			return listOfTasksService.delete(guidOfListOfTasks, guidOfUser);
+		} catch (UserIsNotOwnerOfListOfTasksException e) {
+			e.printStackTrace();
+		}
+	}*/
 }

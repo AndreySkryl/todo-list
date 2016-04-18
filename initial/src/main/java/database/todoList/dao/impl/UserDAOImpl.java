@@ -55,7 +55,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public int findTotalUsers() {
+    public int findCountOfUsers() {
         String sql = "SELECT COUNT(*) FROM USER;";
         Number number = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
         return (number != null ? number.intValue() : 0);
