@@ -17,4 +17,7 @@ public interface ListOfTasksService {
 	void updateListOfTasks(String guidOfUser, ListOfTasks listOfTasks) throws UserIsNotOwnerOfListOfTasksException;
 
 	void deleteListOfTasks(String guidOfListOfTasks, String guidOfUser) throws UserIsNotOwnerOfListOfTasksException;
+
+	void subscribeUserToListOfTasks(String guidOfListOfTasks, String guidOfUser);
+	void unsubscribeUserToListOfTasks(String guidOfListOfTasks, String guidOfUser);
 }

@@ -50,7 +50,7 @@ public class UserAndListOfTasksDAOImpl implements UserAndListOfTasksDAO {
 	}
 
 	@Override
-	public int findTotalUserAndListOfTasks() {
+	public int findCountOfUserAndListOfTasks() {
 		String sql = "SELECT COUNT(*) FROM USER__LIST_OF_TASKS";
 		Number number = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
 		return (number != null ? number.intValue() : 0);
@@ -60,6 +60,12 @@ public class UserAndListOfTasksDAOImpl implements UserAndListOfTasksDAO {
 	public void updateGuidOfList(String oldGuidOfListOfTasks, String newGuidOfListOfTasks) {
 		String sql = "UPDATE USER__LIST_OF_TASKS SET LIST_OF_TASKS_GUID = ? WHERE LIST_OF_TASKS_GUID = ?;";
 		jdbcTemplate.update(sql, newGuidOfListOfTasks, oldGuidOfListOfTasks);
+	}
+
+	@Override
+	public void delete(String guidOfListOfTasks, String guidOfUser) {
+		String sql = "DELETE FROM USER__LIST_OF_TASKS WHERE USER_GUID = ? AND LIST_OF_TASKS_GUID = ?;";
+		jdbcTemplate.update(sql, guidOfUser, guidOfListOfTasks);
 	}
 
 	@Override

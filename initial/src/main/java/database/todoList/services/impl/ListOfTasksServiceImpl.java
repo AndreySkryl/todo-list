@@ -105,4 +105,20 @@ public class ListOfTasksServiceImpl implements ListOfTasksService {
 		// удаление задач связанных с данным списком
 		listOfTasksDAO.delete(guidOfListOfTasks);
 	}
+
+	@Override
+	public void subscribeUserToListOfTasks(String guidOfListOfTasks, String guidOfUser) {
+		if (guidOfListOfTasks == null) throw new IllegalArgumentException(GUID_FIELD_IS_NOT_SET);
+		if (guidOfUser == null) throw new IllegalArgumentException(GUID_FIELD_IS_NOT_SET);
+
+		userAndListOfTasksDAO.insert(new UserAndListOfTasks(guidOfUser, guidOfListOfTasks));
+	}
+
+	@Override
+	public void unsubscribeUserToListOfTasks(String guidOfListOfTasks, String guidOfUser) {
+		if (guidOfListOfTasks == null) throw new IllegalArgumentException(GUID_FIELD_IS_NOT_SET);
+		if (guidOfUser == null) throw new IllegalArgumentException(GUID_FIELD_IS_NOT_SET);
+
+		userAndListOfTasksDAO.delete(guidOfListOfTasks, guidOfUser);
+	}
 }

@@ -87,4 +87,26 @@ public class ListOfTasksController {
 		}
 		return HttpStatus.INTERNAL_SERVER_ERROR;
 	}
+
+	@RequestMapping(value = "/subscribe", method = RequestMethod.POST)
+	public HttpStatus subscribe(@RequestParam(ListOfTasks.GUID_OF_LIST_Of_TASKS) String guidOfListOfTasks,
+								@RequestParam(User.GUID_OF_USER) String guidOfUser) {
+		try {
+			listOfTasksService.subscribeUserToListOfTasks(guidOfListOfTasks, guidOfUser);
+		} catch (Throwable exception) {
+			System.err.println(exception.getMessage());
+		}
+		return HttpStatus.INTERNAL_SERVER_ERROR;
+	}
+
+	@RequestMapping(value = "/unsubscribe", method = RequestMethod.POST)
+	public HttpStatus unsubscribe(@RequestParam(ListOfTasks.GUID_OF_LIST_Of_TASKS) String guidOfListOfTasks,
+								@RequestParam(User.GUID_OF_USER) String guidOfUser) {
+		try {
+			listOfTasksService.unsubscribeUserToListOfTasks(guidOfListOfTasks, guidOfUser);
+		} catch (Throwable exception) {
+			System.err.println(exception.getMessage());
+		}
+		return HttpStatus.INTERNAL_SERVER_ERROR;
+	}
 }
