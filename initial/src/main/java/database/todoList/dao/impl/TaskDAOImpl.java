@@ -16,8 +16,8 @@ public class TaskDAOImpl implements TaskDAO {
 
     @Override
     public void insert(Task task) {
-        String sql = "INSERT INTO TASK (GUID, LIST_OF_TASKS_GUID, STATUS, DESCRIPTION) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, task.getGuid(), task.getListOfTasksGuid(), task.getStatus(), task.getDescription());
+        String sql = "INSERT INTO TASK (LIST_OF_TASKS_GUID, STATUS, DESCRIPTION) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, task.getListOfTasksGuid(), task.getStatus().toString(), task.getDescription());
     }
 
     @Override
@@ -44,8 +44,8 @@ public class TaskDAOImpl implements TaskDAO {
 
     @Override
     public Collection<Task> findAllTasksOfListOfTasks(String guidOfListOfTasks) {
-        String sql = "SELECT * FROM TASK WHERE LIST_OF_TASKS_GUID = ?";
-        return jdbcTemplate.query(sql, new TaskRowMapper());
+        String sql = "SELECT * FROM TASK WHERE TASK.LIST_OF_TASKS_GUID = ?;";
+        return jdbcTemplate.query(sql, new TaskRowMapper(), guidOfListOfTasks);
     }
 
     @Override
@@ -65,5 +65,11 @@ public class TaskDAOImpl implements TaskDAO {
 	public void delete(String guidOfTask) {
 		String sql = "DELETE FROM TASK WHERE GUID = ?;";
 		jdbcTemplate.update(sql, guidOfTask);
+	}
+
+	@Override
+	public void deleteByGuidOfListOfTasks(String guidOfListOfTask) {
+		String sql = "DELETE FROM TASK WHERE LIST_OF_TASKS_GUID = ?;";
+		jdbcTemplate.update(sql, guidOfListOfTask);
 	}
 }

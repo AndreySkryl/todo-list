@@ -37,8 +37,8 @@ public class Task {
     }
 
     public void setGuid(String guid) {
-        this.guid = guid;
-    }
+		this.guid = guid;
+	}
 
     public Status getStatus() {
         return status;

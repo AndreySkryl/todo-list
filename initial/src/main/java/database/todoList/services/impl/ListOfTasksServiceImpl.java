@@ -1,29 +1,34 @@
 package database.todoList.services.impl;
 
 import database.todoList.dao.ListOfTasksDAO;
+import database.todoList.dao.TaskDAO;
 import database.todoList.dao.UserAndListOfTasksDAO;
 import database.todoList.exceptions.UserIsNotOwnerOfListOfTasksException;
 import database.todoList.model.ListOfTasks;
 import database.todoList.model.UserAndListOfTasks;
 import database.todoList.services.ListOfTasksService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
+@Service
 public class ListOfTasksServiceImpl implements ListOfTasksService {
 	@Autowired private ListOfTasksDAO listOfTasksDAO;
 	@Autowired private UserAndListOfTasksDAO userAndListOfTasksDAO;
+	@Autowired private TaskDAO taskDAO;
 
 	public static final String GUID_FIELD_IS_NOT_SET = "Поле GUID имеет значение null.";
 	public static final String THE_OBJECT_IS_NOT_VALID = "Объект класса ListOfTasks не прошёл валидацию.";
 	public static final String NPE = "Результатом стал NPE.";
+	public static final String ADMIN_OF_LIST_CANNOT_UNSUBSCRIBE_FROM_LIST =
+			"Данный пользователь не может отписаться от данного списка, т.к. является его админом.";
 
 	boolean validation(ListOfTasks listOfTasks) {
-		return listOfTasks.getGuid() != null && listOfTasks.getUserGuid() != null &&
-				listOfTasks.getFavourites() != null && listOfTasks.getName() != null;
+		return listOfTasks.getUserGuid() != null && listOfTasks.getFavourites() != null && listOfTasks.getName() != null;
 	}
 
 	@Transactional
@@ -40,9 +45,7 @@ public class ListOfTasksServiceImpl implements ListOfTasksService {
 	@Transactional
 	@Override
 	public void insertListsOfTasks(Collection<ListOfTasks> listOfTasksCollection) {
-		for (ListOfTasks listOfTasks : listOfTasksCollection) {
-			insertListOfTasks(listOfTasks);
-		}
+		for (ListOfTasks listOfTasks : listOfTasksCollection) insertListOfTasks(listOfTasks);
 	}
 
 	@Override
@@ -75,7 +78,8 @@ public class ListOfTasksServiceImpl implements ListOfTasksService {
 	@Override
 	public void updateListOfTasks(String guidOfUser, ListOfTasks listOfTasks) throws UserIsNotOwnerOfListOfTasksException {
 		if (guidOfUser == null) throw new IllegalArgumentException(GUID_FIELD_IS_NOT_SET);
-		if (!validation(listOfTasks)) throw new IllegalArgumentException(THE_OBJECT_IS_NOT_VALID);
+		if (listOfTasks.getGuid() == null && !validation(listOfTasks))
+			throw new IllegalArgumentException(THE_OBJECT_IS_NOT_VALID);
 
 		String guidOfOwnerOfListOfTasks = listOfTasksDAO.findGuidOfOwnerOfListOfTasks(listOfTasks.getGuid());
 
@@ -102,7 +106,7 @@ public class ListOfTasksServiceImpl implements ListOfTasksService {
 
 
 		userAndListOfTasksDAO.deleteByGuidOfListOfTasks(guidOfListOfTasks);
-		// удаление задач связанных с данным списком
+		taskDAO.deleteByGuidOfListOfTasks(guidOfListOfTasks);
 		listOfTasksDAO.delete(guidOfListOfTasks);
 	}
 
@@ -118,6 +122,13 @@ public class ListOfTasksServiceImpl implements ListOfTasksService {
 	public void unsubscribeUserToListOfTasks(String guidOfListOfTasks, String guidOfUser) {
 		if (guidOfListOfTasks == null) throw new IllegalArgumentException(GUID_FIELD_IS_NOT_SET);
 		if (guidOfUser == null) throw new IllegalArgumentException(GUID_FIELD_IS_NOT_SET);
+
+		String guidOfOwnerOfListOfTasks = listOfTasksDAO.findGuidOfOwnerOfListOfTasks(guidOfListOfTasks);
+
+		if (guidOfOwnerOfListOfTasks == null) throw new NullPointerException(NPE);
+
+		if (Objects.deepEquals(guidOfUser, guidOfOwnerOfListOfTasks))
+			throw new IllegalStateException(ADMIN_OF_LIST_CANNOT_UNSUBSCRIBE_FROM_LIST);
 
 		userAndListOfTasksDAO.delete(guidOfListOfTasks, guidOfUser);
 	}

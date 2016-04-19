@@ -3,10 +3,12 @@ package database.todoList.services.impl;
 import database.todoList.dao.ColleagueDAO;
 import database.todoList.services.ColleagueService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Objects;
 
+@Service
 public class ColleagueServiceImpl implements ColleagueService {
 	@Autowired ColleagueDAO colleagueDAO;
 

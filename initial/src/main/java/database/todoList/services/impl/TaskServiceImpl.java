@@ -4,10 +4,11 @@ import database.todoList.dao.TaskDAO;
 import database.todoList.model.Task;
 import database.todoList.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
+@Service
 public class TaskServiceImpl implements TaskService {
 	@Autowired private TaskDAO taskDAO;
 
@@ -16,8 +17,7 @@ public class TaskServiceImpl implements TaskService {
 	public static final String NPE = "Результатом стал NPE.";
 
 	boolean validation(Task task) {
-		return task.getGuid() != null && task.getListOfTasksGuid() != null &&
-				task.getStatus() != null && task.getStatus() != null;
+		return task.getListOfTasksGuid() != null && task.getStatus() != null && task.getDescription() != null;
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public void deleteTask(String  guidOfTask) {
+	public void deleteTask(String guidOfTask) {
 		if (guidOfTask == null) throw new IllegalArgumentException(INVALID_GUID);
 
 		taskDAO.delete(guidOfTask);
@@ -74,7 +74,6 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public void deleteTasks(Collection<String> guidesOfTask) {
-		for (String guidOfTask : guidesOfTask)
-			taskDAO.delete(guidOfTask);
+		for (String guidOfTask : guidesOfTask) taskDAO.delete(guidOfTask);
 	}
 }

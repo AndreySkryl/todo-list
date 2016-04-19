@@ -4,10 +4,12 @@ import database.todoList.dao.UserDAO;
 import database.todoList.model.User;
 import database.todoList.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
+@Service
 public class UserServiceImpl implements UserService {
 	@Autowired private UserDAO userDAO;
 
@@ -16,20 +18,19 @@ public class UserServiceImpl implements UserService {
 	public static final String GUID_FIELD_IS_NOT_SET = "Поле GUID имеет значение null.";
 
 	boolean validation(User user) {
-		return user.getGuid() != null && user.getLogin() != null &&
-				user.getPassword() != null && user.geteMail() != null;
+		return user.getLogin() != null && user.getPassword() != null && user.geteMail() != null;
 	}
 
 	@Override
 	public void insertUser(User user) {
-		if (validation(user)) userDAO.insert(user);
-		else throw new IllegalArgumentException(THE_FIELDS_ARE_NOT_FILLED);
+		if (!validation(user)) throw new IllegalArgumentException(THE_FIELDS_ARE_NOT_FILLED);
+
+		userDAO.insert(user);
 	}
 
 	@Override
 	public void insertUsers(Collection<User> users) {
-		for (User user : users)
-			if (!validation(user)) throw new IllegalArgumentException(THE_FIELDS_ARE_NOT_FILLED);
+		for (User user : users) if (!validation(user)) throw new IllegalArgumentException(THE_FIELDS_ARE_NOT_FILLED);
 
 		userDAO.insertBatch(users);
 	}

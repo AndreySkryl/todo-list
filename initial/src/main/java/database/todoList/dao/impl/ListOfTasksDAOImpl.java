@@ -68,13 +68,13 @@ public class ListOfTasksDAOImpl implements ListOfTasksDAO {
 
 	@Override
 	public String findGuidOfOwnerOfListOfTasks(String guidOfListOfTasks) {
-		String sqlSelectOwnerForListOfTasks = "SELECT USER_GUID FROM LIST_OF_TASKS WHERE GUID = ?;";
-		return String.valueOf(jdbcTemplate.query(sqlSelectOwnerForListOfTasks, new RowMapper<String>() {
+		String sql = "SELECT USER_GUID FROM LIST_OF_TASKS WHERE GUID = ?;";
+		return jdbcTemplate.queryForObject(sql, new RowMapper<String>() {
 			@Override
 			public String mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 				return resultSet.getString("USER_GUID");
 			}
-		}, guidOfListOfTasks));
+		}, guidOfListOfTasks);
 	}
 
 	@Override

@@ -37,17 +37,17 @@ public class ListOfTasks {
         return userGuid;
     }
 
-    public Integer getFavourites() {
-        return favourites;
+    public void setUserGuid(String userGuid) {
+        this.userGuid = userGuid;
     }
 
-    public void setFavourites(Integer favourites) {
-        this.favourites = favourites;
-    }
+	public Integer getFavourites() {
+		return favourites;
+	}
 
-    public void setFavourites(int favourites) {
-        this.favourites = favourites;
-    }
+	public void setFavourites(int favourites) {
+		this.favourites = favourites;
+	}
 
     public String getName() {
         return name;

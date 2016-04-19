@@ -21,7 +21,7 @@ import static java.util.Collections.EMPTY_LIST;
 public class ListOfTasksController {
 	@Autowired private ListOfTasksService listOfTasksService;
 
-	@RequestMapping(value = "/add/one", consumes = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/add/one", method = RequestMethod.POST)
 	public HttpStatus newListOfTasks(@RequestBody ListOfTasks listOfTasks) {
 		try {
 			listOfTasksService.insertListOfTasks(listOfTasks);
@@ -93,17 +93,19 @@ public class ListOfTasksController {
 								@RequestParam(User.GUID_OF_USER) String guidOfUser) {
 		try {
 			listOfTasksService.subscribeUserToListOfTasks(guidOfListOfTasks, guidOfUser);
+			return HttpStatus.OK;
 		} catch (Throwable exception) {
 			System.err.println(exception.getMessage());
 		}
 		return HttpStatus.INTERNAL_SERVER_ERROR;
 	}
 
-	@RequestMapping(value = "/unsubscribe", method = RequestMethod.POST)
+	@RequestMapping(value = "/unsubscribe", method = RequestMethod.DELETE)
 	public HttpStatus unsubscribe(@RequestParam(ListOfTasks.GUID_OF_LIST_Of_TASKS) String guidOfListOfTasks,
 								@RequestParam(User.GUID_OF_USER) String guidOfUser) {
 		try {
 			listOfTasksService.unsubscribeUserToListOfTasks(guidOfListOfTasks, guidOfUser);
+			return HttpStatus.OK;
 		} catch (Throwable exception) {
 			System.err.println(exception.getMessage());
 		}
