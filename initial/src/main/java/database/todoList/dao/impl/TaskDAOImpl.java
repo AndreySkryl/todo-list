@@ -57,8 +57,8 @@ public class TaskDAOImpl implements TaskDAO {
 
     @Override
     public void update(Task task) {
-		String sql = "UPDATE INTO TASK SET LIST_OF_TASKS_GUID = ?, STATUS = ?, DESCRIPTION = ? WHERE GUID = ?;";
-		jdbcTemplate.update(sql, task.getListOfTasksGuid(), task.getStatus(), task.getDescription(), task.getGuid());
+		String sql = "UPDATE TASK SET LIST_OF_TASKS_GUID = ?, STATUS = ?, DESCRIPTION = ? WHERE GUID = ?;";
+		jdbcTemplate.update(sql, task.getListOfTasksGuid(), task.getStatus().getValue(), task.getDescription(), task.getGuid());
 	}
 
 	@Override

@@ -9,7 +9,11 @@ public enum Status {
         this.value = value;
     }
 
-    public static Status fromString(String value) {
+	public String getValue() {
+		return value;
+	}
+
+	public static Status fromString(String value) {
         if (value != null) {
             for (Status status : Status.values()) {
                 if (value.equalsIgnoreCase(status.value)) {
