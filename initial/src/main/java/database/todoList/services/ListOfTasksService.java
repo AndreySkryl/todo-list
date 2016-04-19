@@ -2,6 +2,7 @@ package database.todoList.services;
 
 import database.todoList.exceptions.UserIsNotOwnerOfListOfTasksException;
 import database.todoList.model.ListOfTasks;
+import database.todoList.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -20,4 +21,5 @@ public interface ListOfTasksService {
 
 	void subscribeUserToListOfTasks(String guidOfListOfTasks, String guidOfUser);
 	void unsubscribeUserToListOfTasks(String guidOfListOfTasks, String guidOfUser);
+	Collection<User> getAllSubscribersForListOfTask(String guidOfListOfTask);
 }

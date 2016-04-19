@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import static java.util.Collections.EMPTY_LIST;
 
@@ -102,7 +103,7 @@ public class ListOfTasksController {
 
 	@RequestMapping(value = "/unsubscribe", method = RequestMethod.DELETE)
 	public HttpStatus unsubscribe(@RequestParam(ListOfTasks.GUID_OF_LIST_Of_TASKS) String guidOfListOfTasks,
-								@RequestParam(User.GUID_OF_USER) String guidOfUser) {
+								  @RequestParam(User.GUID_OF_USER) String guidOfUser) {
 		try {
 			listOfTasksService.unsubscribeUserToListOfTasks(guidOfListOfTasks, guidOfUser);
 			return HttpStatus.OK;
@@ -110,5 +111,16 @@ public class ListOfTasksController {
 			System.err.println(exception.getMessage());
 		}
 		return HttpStatus.INTERNAL_SERVER_ERROR;
+	}
+
+	@RequestMapping(value = "/get/all_subscribers", produces = "application/json", method = RequestMethod.GET)
+	public ResponseEntity<Collection<User>> getAllSubscribers(
+			@RequestParam(ListOfTasks.GUID_OF_LIST_Of_TASKS) String guidOfListOfTask) {
+		try {
+			return new ResponseEntity<>(listOfTasksService.getAllSubscribersForListOfTask(guidOfListOfTask), HttpStatus.OK);
+		} catch (Throwable exception) {
+			System.err.println(exception.getMessage());
+		}
+		return new ResponseEntity<Collection<User>>(Collections.EMPTY_LIST, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

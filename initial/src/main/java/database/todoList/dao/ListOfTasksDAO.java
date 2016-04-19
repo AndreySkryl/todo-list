@@ -1,6 +1,7 @@
 package database.todoList.dao;
 
 import database.todoList.model.ListOfTasks;
+import database.todoList.model.User;
 
 import java.util.Collection;
 
@@ -18,4 +19,6 @@ public interface ListOfTasksDAO {
     void update(ListOfTasks listOfTasks);
 
     void delete(String guidOfListOfTasks);
+
+    Collection<User> getAllSubscribersForListOfTask(String guidOfListOfTask);
 }

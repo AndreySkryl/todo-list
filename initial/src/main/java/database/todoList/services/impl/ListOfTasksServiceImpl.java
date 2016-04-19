@@ -5,6 +5,7 @@ import database.todoList.dao.TaskDAO;
 import database.todoList.dao.UserAndListOfTasksDAO;
 import database.todoList.exceptions.UserIsNotOwnerOfListOfTasksException;
 import database.todoList.model.ListOfTasks;
+import database.todoList.model.User;
 import database.todoList.model.UserAndListOfTasks;
 import database.todoList.services.ListOfTasksService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,5 +132,16 @@ public class ListOfTasksServiceImpl implements ListOfTasksService {
 			throw new IllegalStateException(ADMIN_OF_LIST_CANNOT_UNSUBSCRIBE_FROM_LIST);
 
 		userAndListOfTasksDAO.delete(guidOfListOfTasks, guidOfUser);
+	}
+
+	@Override
+	public Collection<User> getAllSubscribersForListOfTask(String guidOfListOfTask) {
+		if (guidOfListOfTask == null) throw new IllegalArgumentException(GUID_FIELD_IS_NOT_SET);
+
+		Collection<User> listOfUsersOfListOfTasks = listOfTasksDAO.getAllSubscribersForListOfTask(guidOfListOfTask);
+
+		if (listOfUsersOfListOfTasks == null) throw new NullPointerException(NPE);
+
+		return listOfUsersOfListOfTasks;
 	}
 }

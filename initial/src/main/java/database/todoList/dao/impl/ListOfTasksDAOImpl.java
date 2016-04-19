@@ -2,7 +2,9 @@ package database.todoList.dao.impl;
 
 import database.todoList.dao.ListOfTasksDAO;
 import database.todoList.mappers.ListOfTasksRowMapper;
+import database.todoList.mappers.UserRowMapper;
 import database.todoList.model.ListOfTasks;
+import database.todoList.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -88,5 +90,13 @@ public class ListOfTasksDAOImpl implements ListOfTasksDAO {
 	public void delete(String guidOfListOfTasks) {
 		String sql = "DELETE FROM LIST_OF_TASKS WHERE GUID = ?;";
 		jdbcTemplate.update(sql, guidOfListOfTasks);
+	}
+
+	@Override
+	public Collection<User> getAllSubscribersForListOfTask(String guidOfListOfTask) {
+		String sql =
+				"SELECT * FROM user INNER JOIN user__list_of_tasks ON user.GUID = user__list_of_tasks.USER_GUID " +
+				"WHERE user__list_of_tasks.LIST_OF_TASKS_GUID = ?;";
+		return jdbcTemplate.query(sql, new UserRowMapper(), guidOfListOfTask);
 	}
 }
