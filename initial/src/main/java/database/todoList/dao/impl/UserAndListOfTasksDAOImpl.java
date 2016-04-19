@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 
 @Repository
-public class UserAndListOfTasksImpl implements UserAndListOfTasksDAO {
+public class UserAndListOfTasksDAOImpl implements UserAndListOfTasksDAO {
     @Autowired(required = false)
     private JdbcTemplate jdbcTemplate;
 
@@ -44,6 +44,12 @@ public class UserAndListOfTasksImpl implements UserAndListOfTasksDAO {
     }
 
 	@Override
+	public Collection<String> findListOfTasksGuidByUserGuid(String guidOfUser) {
+		String sql = "SELECT LIST_OF_TASKS_GUID FROM USER__LIST_OF_TASKS WHERE USER_GUID = ?;";
+		return jdbcTemplate.queryForList(sql, new Object[]{guidOfUser}, String.class);
+	}
+
+	@Override
 	public int findTotalUserAndListOfTasks() {
 		String sql = "SELECT COUNT(*) FROM USER__LIST_OF_TASKS";
 		Number number = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
@@ -54,5 +60,11 @@ public class UserAndListOfTasksImpl implements UserAndListOfTasksDAO {
 	public void updateGuidOfList(String oldGuidOfListOfTasks, String newGuidOfListOfTasks) {
 		String sql = "UPDATE USER__LIST_OF_TASKS SET LIST_OF_TASKS_GUID = ? WHERE LIST_OF_TASKS_GUID = ?;";
 		jdbcTemplate.update(sql, newGuidOfListOfTasks, oldGuidOfListOfTasks);
+	}
+
+	@Override
+	public void deleteByGuidOfListOfTasks(String guidOfListOfTasks) {
+		String sql = "DELETE FROM USER__LIST_OF_TASKS WHERE LIST_OF_TASKS_GUID = ?;";
+		jdbcTemplate.update(sql, guidOfListOfTasks);
 	}
 }

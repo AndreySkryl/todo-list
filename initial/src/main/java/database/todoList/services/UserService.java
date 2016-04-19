@@ -13,7 +13,7 @@ public interface UserService {
 	Collection<User> findAllUsers();
 	int findCountOfUsers();
 
-	void updateUser(String guid, User user);
+	void updateUser(User user);
 
 	void deleteUser(String guid);
 	void deleteUsers(Collection<String> guides);

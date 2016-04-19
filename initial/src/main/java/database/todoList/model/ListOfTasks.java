@@ -10,7 +10,7 @@ public class ListOfTasks {
 
     String guid;
     String userGuid;
-    int favourites;
+    Integer favourites;
     String name;
     String description;
     Timestamp createTime;
@@ -37,12 +37,12 @@ public class ListOfTasks {
         return userGuid;
     }
 
-    public void setUserGuid(String userGuid) {
-        this.userGuid = userGuid;
+    public Integer getFavourites() {
+        return favourites;
     }
 
-    public int getFavourites() {
-        return favourites;
+    public void setFavourites(Integer favourites) {
+        this.favourites = favourites;
     }
 
     public void setFavourites(int favourites) {

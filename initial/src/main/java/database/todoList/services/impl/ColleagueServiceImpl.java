@@ -53,15 +53,23 @@ public class ColleagueServiceImpl implements ColleagueService {
 
 	@Override
 	public void deleteConnectionBetweenColleagues(String guidOfColleague_1, String guidOfColleague_2) {
+		if (!validation(guidOfColleague_1, guidOfColleague_2))
+			throw new IllegalArgumentException(INVALID_GUID);
+
 		colleagueDAO.delete(guidOfColleague_1, guidOfColleague_2);
 		colleagueDAO.delete(guidOfColleague_2, guidOfColleague_1);
 	}
 
 	@Override
 	public void deleteConnectionBetweenColleagues(String guidOfColleague_1, Collection<String> listOfGuidOfColleague) {
-		for (String guidOfColleague : listOfGuidOfColleague) {
+		if (guidOfColleague_1 == null) throw new IllegalArgumentException(INVALID_GUID);
+		if (listOfGuidOfColleague == null) throw new IllegalArgumentException(THE_OBJECT_IS_NOT_VALID);
+
+		for (String guid : listOfGuidOfColleague)
+			if (guid == null) throw new IllegalArgumentException(INVALID_GUID);
+
+		for (String guidOfColleague : listOfGuidOfColleague)
 			deleteConnectionBetweenColleagues(guidOfColleague_1, guidOfColleague);
-		}
 	}
 
 	@Override

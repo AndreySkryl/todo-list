@@ -11,7 +11,10 @@ public interface UserAndListOfTasksDAO {
 
     Collection<UserAndListOfTasks> findUserAndListOfTasksByListOfTasksGuid(String listOfTasksGuid);
     Collection<UserAndListOfTasks> findAll();
+    Collection<String> findListOfTasksGuidByUserGuid(String guidOfUser);
     int findTotalUserAndListOfTasks();
 
     void updateGuidOfList(String oldGuidOfListOfTasks, String newGuidOfListOfTasks);
+
+	void deleteByGuidOfListOfTasks(String guidOfListOfTasks);
 }

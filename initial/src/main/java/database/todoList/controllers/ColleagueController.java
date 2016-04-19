@@ -47,7 +47,7 @@ public class ColleagueController {
 		return HttpStatus.INTERNAL_SERVER_ERROR;
 	}
 
-	@RequestMapping(value = "/get/all/guides", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value = "/get/guides/", produces = "application/json", method = RequestMethod.GET)
 	public ResponseEntity<Collection<String>> getGuidOfColleagues(@RequestParam(User.GUID_OF_USER) String guidOfUser) {
 		try {
 			Collection<String> listOfGuidOfColleagues = colleagueService.findGuidesOfColleaguesByUserGuid(guidOfUser);

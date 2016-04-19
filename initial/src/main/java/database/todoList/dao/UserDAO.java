@@ -14,7 +14,7 @@ public interface UserDAO {
     Collection<User> findAll();
     int findCountOfUsers();
 
-    void update(String guid, User user);
+    void update(User user);
 
     void delete(String guid);
 	void delete(Collection<String> guides);

@@ -6,16 +6,16 @@ import java.util.Collection;
 
 public interface ListOfTasksDAO {
     String insert(ListOfTasks listOfTasks);
-    void insertBatch(Collection<ListOfTasks> listOfTasks);
+    Collection<String> insertBatch(Collection<ListOfTasks> listOfTasks);
     void insertBatchSQL(String sql);
 
     ListOfTasks findListOfTasksByGuid(String guidOfListOfTasks);
     Collection<ListOfTasks> findAll();
     int findTotalListOfTasks();
 
-    String findGuidOfOwner(String guidOfListOfTasks);
+    String findGuidOfOwnerOfListOfTasks(String guidOfListOfTasks);
 
-    void update(String oldGuidOfListOfTasks, ListOfTasks listOfTasks);
+    void update(ListOfTasks listOfTasks);
 
     void delete(String guidOfListOfTasks);
 }

@@ -10,11 +10,13 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
-public class ListOfTasksImpl implements ListOfTasksDAO {
+public class ListOfTasksDAOImpl implements ListOfTasksDAO {
 	@Autowired(required = false)
 	private JdbcTemplate jdbcTemplate;
 
@@ -31,8 +33,13 @@ public class ListOfTasksImpl implements ListOfTasksDAO {
     }
 
     @Override
-    public void insertBatch(Collection<ListOfTasks> listOfTasks) {
-        for (ListOfTasks listOfTask : listOfTasks) insert(listOfTask);
+    public Collection<String> insertBatch(Collection<ListOfTasks> listOfTasks) {
+		List<String> listOfGuidOfListOfTasks = new ArrayList<>();
+		for (ListOfTasks listOfTask : listOfTasks) {
+			String guid = insert(listOfTask);
+			listOfGuidOfListOfTasks.add(guid);
+		}
+		return listOfGuidOfListOfTasks;
     }
 
     @Override
@@ -60,7 +67,7 @@ public class ListOfTasksImpl implements ListOfTasksDAO {
     }
 
 	@Override
-	public String findGuidOfOwner(String guidOfListOfTasks) {
+	public String findGuidOfOwnerOfListOfTasks(String guidOfListOfTasks) {
 		String sqlSelectOwnerForListOfTasks = "SELECT USER_GUID FROM LIST_OF_TASKS WHERE GUID = ?;";
 		return String.valueOf(jdbcTemplate.query(sqlSelectOwnerForListOfTasks, new RowMapper<String>() {
 			@Override
@@ -71,10 +78,10 @@ public class ListOfTasksImpl implements ListOfTasksDAO {
 	}
 
 	@Override
-	public void update(String oldGuidOfListOfTasks, ListOfTasks listOfTasks) {
-		String sql = "UPDATE LIST_OF_TASKS SET GUID = ?, USER_GUID = ?, FAVOURITES = ?, NAME = ?, DESCRIPTION = ? WHERE GUID = ?;";
-		jdbcTemplate.update(sql, listOfTasks.getGuid(), listOfTasks.getUserGuid(), listOfTasks.getFavourites(),
-				listOfTasks.getName(), listOfTasks.getDescription(), oldGuidOfListOfTasks);
+	public void update(ListOfTasks listOfTasks) {
+		String sql = "UPDATE LIST_OF_TASKS SET USER_GUID = ?, FAVOURITES = ?, NAME = ?, DESCRIPTION = ? WHERE GUID = ?;";
+		jdbcTemplate.update(sql, listOfTasks.getUserGuid(), listOfTasks.getFavourites(),
+				listOfTasks.getName(), listOfTasks.getDescription(), listOfTasks.getGuid());
 	}
 
 	@Override

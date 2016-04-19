@@ -73,9 +73,9 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/edit/one", consumes = "application/json", method = RequestMethod.PUT)
-	public HttpStatus updateUser(@RequestParam(User.GUID_OF_USER) String guidOfUser, @RequestBody User user) {
+	public HttpStatus updateUser(@RequestBody User user) {
 		try {
-			userService.updateUser(guidOfUser, user);
+			userService.updateUser(user);
 			return HttpStatus.OK;
 		} catch (Throwable exception) {
 			System.err.println(exception.getMessage());

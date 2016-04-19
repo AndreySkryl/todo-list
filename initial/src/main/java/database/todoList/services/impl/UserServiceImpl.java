@@ -66,11 +66,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUser(String guid, User user) {
-		if (guid == null && !validation(user))
-			throw new IllegalArgumentException(GUID_FIELD_IS_NOT_SET + " " + THE_FIELDS_ARE_NOT_FILLED);
+	public void updateUser(User user) {
+		if (!validation(user))
+			throw new IllegalArgumentException(THE_FIELDS_ARE_NOT_FILLED);
 
-		userDAO.update(guid, user);
+		userDAO.update(user);
 	}
 
 	@Override

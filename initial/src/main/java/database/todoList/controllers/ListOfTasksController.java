@@ -1,12 +1,9 @@
 package database.todoList.controllers;
 
-import database.todoList.dao.ListOfTasksDAO;
-import database.todoList.dao.UserAndListOfTasksDAO;
 import database.todoList.model.ListOfTasks;
-import database.todoList.model.UserAndListOfTasks;
+import database.todoList.model.User;
 import database.todoList.services.ListOfTasksService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,81 +19,72 @@ import static java.util.Collections.EMPTY_LIST;
 @RestController
 @RequestMapping("/list_of_tasks")
 public class ListOfTasksController {
-	@Autowired private ListOfTasksDAO listOfTasksDAO;
-	@Autowired private UserAndListOfTasksDAO userAndListOfTasksDAO;
-
 	@Autowired private ListOfTasksService listOfTasksService;
 
 	@RequestMapping(value = "/add/one", consumes = "application/json", method = RequestMethod.POST)
 	public HttpStatus newListOfTasks(@RequestBody ListOfTasks listOfTasks) {
 		try {
-			String guidOfListOfTasks = listOfTasksDAO.insert(listOfTasks);
-			userAndListOfTasksDAO.insert(new UserAndListOfTasks(listOfTasks.getUserGuid(), guidOfListOfTasks));
-			return HttpStatus.OK;
-		} catch (DataAccessException exception) {
+			listOfTasksService.insertListOfTasks(listOfTasks);
+			return HttpStatus.CREATED;
+		} catch (Throwable exception) {
 			System.err.println(exception.getMessage());
 		}
-		return HttpStatus.BAD_REQUEST;
+		return HttpStatus.INTERNAL_SERVER_ERROR;
 	}
 
 	@RequestMapping(value = "/add/some", consumes = "application/json", method = RequestMethod.POST)
 	public HttpStatus newListsOfTasks(@RequestBody Collection<ListOfTasks> listOfTasksCollection) {
 		try {
-			for (ListOfTasks listOfTasks : listOfTasksCollection) {
-				String guidOfListOfTasks = listOfTasksDAO.insert(listOfTasks);
-				userAndListOfTasksDAO.insert(new UserAndListOfTasks(listOfTasks.getUserGuid(), guidOfListOfTasks));
-			}
+			listOfTasksService.insertListsOfTasks(listOfTasksCollection);
 			return HttpStatus.CREATED;
-		} catch (DataAccessException exception) {
+		} catch (Throwable exception) {
 			System.err.println(exception.getMessage());
 		}
-		return HttpStatus.BAD_REQUEST;
+		return HttpStatus.INTERNAL_SERVER_ERROR;
 	}
 
 	@RequestMapping(value = "/get/one", produces = "application/json", method = RequestMethod.GET)
 	public ResponseEntity<ListOfTasks> getListOfTasks(@RequestParam(ListOfTasks.GUID_OF_LIST_Of_TASKS) String guidOfListOfTasks) {
 		try {
-			ListOfTasks listOfTasks = listOfTasksDAO.findListOfTasksByGuid(guidOfListOfTasks);
+			ListOfTasks listOfTasks = listOfTasksService.findListOfTasksByGuid(guidOfListOfTasks);
 			return new ResponseEntity<>(listOfTasks, HttpStatus.OK);
-		} catch (DataAccessException exception) {
+		} catch (Throwable exception) {
 			System.err.println(exception.getMessage());
 		}
-		return new ResponseEntity<>(new ListOfTasks(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(new ListOfTasks(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@RequestMapping(value = "/get/all", produces = "application/json", method = RequestMethod.GET)
-	public ResponseEntity<Collection<ListOfTasks>> getAllListsOfTasks() {
+	public ResponseEntity<Collection<ListOfTasks>> getAllListsOfTasksOfUser(@RequestParam(User.GUID_OF_USER) String guidOfUser) {
 		try {
-			Collection<ListOfTasks> listOfTasksCollection = listOfTasksDAO.findAll();
-			return new ResponseEntity<>(listOfTasksCollection, HttpStatus.OK);
-		} catch (DataAccessException exception) {
+			return new ResponseEntity<>(listOfTasksService.findAllListOfTasksOfUser(guidOfUser), HttpStatus.OK);
+		} catch (Throwable exception) {
 			System.err.println(exception.getMessage());
 		}
-		return new ResponseEntity<Collection<ListOfTasks>>(EMPTY_LIST, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<Collection<ListOfTasks>>(EMPTY_LIST, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	/*@RequestMapping(value = "/edit/one", consumes = "application/json", method = RequestMethod.PUT)
-	public HttpStatus updateListOfTasks(@RequestParam(ListOfTasks.GUID_OF_LIST_Of_TASKS) String guidOfListOfTasks,
-										@RequestParam(User.GUID_OF_USER) String guidOfUser,
+	@RequestMapping(value = "/edit/one", consumes = "application/json", method = RequestMethod.PUT)
+	public HttpStatus updateListOfTasks(@RequestParam(User.GUID_OF_USER) String guidOfUser,
 										@RequestBody ListOfTasks listOfTasks) {
 		try {
-			listOfTasksDAO.update(guidOfListOfTasks, guidOfUser, listOfTasks);
-			userAndListOfTasksDAO.updateGuidOfList(guidOfListOfTasks, listOfTasks.getGuid());
+			listOfTasksService.updateListOfTasks(guidOfUser, listOfTasks);
 			return HttpStatus.OK;
-		} catch (DataAccessException exception) {
+		} catch (Throwable exception) {
 			System.err.println(exception.getMessage());
 		}
-		return HttpStatus.BAD_REQUEST;
+		return HttpStatus.INTERNAL_SERVER_ERROR;
 	}
 
-	//@Transactional
 	@RequestMapping(value = "/delete/one", method = RequestMethod.DELETE)
 	public HttpStatus deleteListOfTasks(@RequestParam(ListOfTasks.GUID_OF_LIST_Of_TASKS) String guidOfListOfTasks,
-								 		@RequestParam(User.GUID_OF_USER) String guidOfUser) {
+										@RequestParam(User.GUID_OF_USER) String guidOfUser) {
 		try {
-			return listOfTasksService.delete(guidOfListOfTasks, guidOfUser);
-		} catch (UserIsNotOwnerOfListOfTasksException e) {
-			e.printStackTrace();
+			listOfTasksService.deleteListOfTasks(guidOfListOfTasks, guidOfUser);
+			return HttpStatus.OK;
+		} catch (Throwable exception) {
+			System.err.println(exception.getMessage());
 		}
-	}*/
+		return HttpStatus.INTERNAL_SERVER_ERROR;
+	}
 }
