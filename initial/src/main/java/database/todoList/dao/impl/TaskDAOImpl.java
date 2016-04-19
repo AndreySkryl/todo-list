@@ -16,15 +16,8 @@ public class TaskDAOImpl implements TaskDAO {
 
     @Override
     public void insert(Task task) {
-        String sql =
-				"INSERT INTO TASK " +
-                "(LIST_OF_TASKS_GUID, GUID, STATUS, DESCRIPTION, CREATE_TIME, UPDATE_TIME) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
-
-        jdbcTemplate.update(sql,
-                task.getListOfTasksGuid(), task.getGuid(),
-                task.getStatus(), task.getDescription(),
-                task.getCreateTime(), task.getUpdateTime());
+        String sql = "INSERT INTO TASK (GUID, LIST_OF_TASKS_GUID, STATUS, DESCRIPTION) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, task.getGuid(), task.getListOfTasksGuid(), task.getStatus(), task.getDescription());
     }
 
     @Override
@@ -50,9 +43,27 @@ public class TaskDAOImpl implements TaskDAO {
     }
 
     @Override
+    public Collection<Task> findAllTasksOfListOfTasks(String guidOfListOfTasks) {
+        String sql = "SELECT * FROM TASK WHERE LIST_OF_TASKS_GUID = ?";
+        return jdbcTemplate.query(sql, new TaskRowMapper());
+    }
+
+    @Override
     public int findTotalTasks() {
         String sql = "SELECT COUNT(*) FROM TASK";
         Number number = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
         return (number != null ? number.intValue() : 0);
     }
+
+    @Override
+    public void update(Task task) {
+		String sql = "UPDATE INTO TASK SET LIST_OF_TASKS_GUID = ?, STATUS = ?, DESCRIPTION = ? WHERE GUID = ?;";
+		jdbcTemplate.update(sql, task.getListOfTasksGuid(), task.getStatus(), task.getDescription(), task.getGuid());
+	}
+
+	@Override
+	public void delete(String guidOfTask) {
+		String sql = "DELETE FROM TASK WHERE GUID = ?;";
+		jdbcTemplate.update(sql, guidOfTask);
+	}
 }

@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 
 @Component
 public class Task {
+    public static final String GUID_OF_TASK = "guidOfTask";
+
     String listOfTasksGuid;
     String guid;
     Status status;

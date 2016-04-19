@@ -11,6 +11,10 @@ public interface TaskDAO {
 
     Task findTaskByGuid(String guid);
     Collection<Task> findAll();
-
+    Collection<Task> findAllTasksOfListOfTasks(String guidOfListOfTasks);
     int findTotalTasks();
+
+	void update(Task task);
+
+	void delete(String guidOfTask);
 }

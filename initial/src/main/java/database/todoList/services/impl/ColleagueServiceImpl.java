@@ -11,7 +11,7 @@ public class ColleagueServiceImpl implements ColleagueService {
 	@Autowired ColleagueDAO colleagueDAO;
 
 	public static final String THE_OBJECT_IS_NOT_VALID = "Объект класса Colleague не прошёл валидацию.";
-	public static final String INVALID_GUID = "Неверно задан GUID.";
+	public static final String INVALID_GUID = "Неверно задан GUID (возможно имеет значение null).";
 	public static final String NPE = "Результатом стал NPE.";
 
 	boolean validation(String guidOfColleague_1, String guidOfColleague_2) {
