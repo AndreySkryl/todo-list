@@ -3,11 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>TODO List</title>
-    <script src="js/angular.js"></script>
-    <script src="js/angular-resource.js"></script>
-    <script src="js/app.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <!--<script src="js/angular.js"></script>-->
+    <!--<script src="js/angular-resource.js"></script>-->
+    <!--<script src="js/app.js"></script>-->
 </head>
 <body ng-app="todo_list">
-    <h1>Hello world</h1>
+    <div id="wrapper">
+
+        <div id="header">
+            <div id="navigation">
+                <ul>
+                    <li><a href="#">Главная</a></li>
+                    <li><a href="#">Пользователи</a></li>
+                    <li><a href="#">Настройки</a></li>
+                </ul>
+            </div>
+            <div id="user_profile">
+                <ul>
+                    <li><img src="#" alt="Фото пользователя"></li>
+                    <li><span id="user_full_name">Имя пользователя</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="content">
+            <div id="wrapper_for_lists_of_tasks">
+                <!-- шаблоны списков задач -->
+                <div id="templates_of_lists_of_tasks">
+                    <fieldset>
+                        <legend><img src="#" alt="Favourites">Шаблоны списков задач</legend>
+                        <div id="collection_of_templates">
+                            <ul>
+                                <li><input type="image" value="Добавить список"></li>
+                                <li>Шаблон 1</li>
+                                <li>Шаблон 1</li>
+                                <li>Шаблон 1</li>
+                                <li>Шаблон 1</li>
+                                <li>Шаблон 1</li>
+                                <li>Шаблон 1</li>
+                                <li>Шаблон 1</li>
+                                <li>Шаблон 1</li>
+                            </ul>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- списки задач -->
+                <div id="lists_of_tasks">
+                    <fieldset>
+                        <legend><img src="#" alt="">Списки задач</legend>
+                        <div id="collection_of_list_of_tasks">
+                            <ul>
+                                <li><input type="image" value="Добавить список"></li>
+                                <li>Шаблон 1</li>
+                            </ul>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+
+            <!-- коллеги -->
+            <div id="colleagues">
+                <p>Коллеги</p>
+                <input id="search_of_user" type="text" placeholder="Поиск">
+                <div id="list_of_colleagues">
+                    <ul>
+                        <li>Петров Иван</li>
+                        <li>Гордеев Владимир</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
