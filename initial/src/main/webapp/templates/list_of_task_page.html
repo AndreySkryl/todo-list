@@ -1,0 +1,68 @@
+<link rel="stylesheet" href="../css/list_of_task_page.css">
+
+<template>
+    <div id="wrapper_for_list_of_tasks">
+        <div id="description_of_list_of_tasks">
+            <fieldset>
+                <legend>Список задач "{{list_of_task.name}}"</legend>
+                <span>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam dignissimos enim exercitationem maiores, molestiae nam natus nostrum officia quia repellat, sit temporibus vel? Ab amet dolor doloribus laboriosam nulla optio!
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad alias beatae consequuntur dolor doloribus, enim excepturi expedita, labore maiores numquam omnis quisquam quo tempore tenetur unde vitae voluptas voluptate!
+                    </p>
+                </span>
+            </fieldset>
+        </div>
+
+        <div id="description_of_tasks">
+            <fieldset>
+                <legend>Описание задач:</legend>
+                <div id="list_of_statuses">
+                    <ul>
+                        <li><span>Все</span></li>
+                        <li><span>В плане</span></li>
+                        <li><span>В процессе</span></li>
+                        <li><span>Решенные</span></li>
+                    </ul>
+                </div>
+
+                <div class="clear"></div>
+
+                <div id="search">
+                    <input id="search_of_task" type="text" placeholder="Поиск">
+                    <input id="add" type="submit" value="Добавить">
+                    <input id="find" type="submit" value="Найти">
+                </div>
+
+                <div id="list_of_tasks">
+                    <ul>
+                        <li class="description_of_task">
+                            <span>Задача 1</span>
+
+                            <ul>
+                                <li><img src="#" alt="1"></li>
+                                <li><img src="#" alt="2"></li>
+                                <li><img src="#" alt="3"></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div id="colleagues">
+        <p>Коллеги</p>
+        <input id="search_of_user" type="text" placeholder="Добавить коллегу">
+        <div id="list_of_colleagues">
+            <ul>
+                <li class="colleague">
+                    <ul>
+                        <li><img src="../img/cross.jpg" alt="Фото пользователя" width="50" height="50"/></li>
+                        <li><span class="user_full_name">Имя пользователя</span></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,144 @@
+#search_new_people > fieldset > legend,
+#collection_of_people > fieldset > ul > li > p,
+#colleagues > p {
+    color: #747474;
+    font-size: 33px;
+}
+
+#search_new_people > fieldset {
+    border: 3px solid #747474;
+    border-radius: 10px;
+}
+
+/* список новых пользователей */
+#wrapper_for_users {
+    float: left;
+    margin-left: 15px;
+    position: relative;
+    width: 70%;
+}
+
+#search {
+    margin: 5px 10px;
+    height: 25px;
+}
+
+input#search_new_user {
+    border-radius: 12px;
+    font-size: 14px;
+    height: 25px;
+    padding-left: 10px;
+    width: 75%;
+}
+
+input#find {
+    border-radius: 16px;
+    background-color: #71cb52;
+    color: #ffffff;
+    font-size: 16px;
+    height: 32px;
+    vertical-align: middle;
+    width: calc(100% - 75% - 2 * 10px);
+}
+
+#collection_of_people {
+    margin-top: 15px;
+    overflow: hidden;
+    padding-left: 5px;
+}
+
+#collection_of_people > fieldset {
+    border-radius: 10px;
+    border-top: 3px solid #747474;
+    padding: 5px 10px;
+}
+
+li.user {
+    height: 50px;
+    line-height: 50px;
+}
+
+li.user ul > li {
+    float: left;
+    list-style: none;
+    height: 50px;
+}
+
+li.user ul > li > img {
+    border-radius: 25px;
+    background-color: #bbb;
+    height: 50px;
+    margin-right: 5px;
+    width: 50px;
+}
+
+li.user > ul > li > span {
+    color: #747474;
+    font-size: 22px;
+}
+
+li.user > input.add_user {
+    background-color: #71cb52;
+    border-radius: 25px;
+    color: #ffffff;
+    font-size: 24px;
+    float: right;
+    height: 50px;
+    padding: 0 10px;
+    position: relative;
+}
+
+/* Коллеги */
+#colleagues {
+    float: right;
+    margin: 0 15px;
+    position: relative;
+    width: calc(100% - 70% - 45px);
+}
+
+#colleagues > p {
+    text-align: center;
+}
+
+/* Поиск */
+input#search_of_user {
+    align-content: center;
+    border-radius: 12px;
+    font-size: 14px;
+    height: 25px;
+    margin: 12px 0;
+    padding-left: 10px;
+    position: relative;
+    width: calc(100% - 15px);
+}
+
+#list_of_colleagues {
+    border: 3px solid #747474;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 5px 10px;
+}
+
+li.colleague {
+    line-height: 50px;
+    height: 50px;
+}
+
+li.colleague > ul > li {
+    float: left;
+    list-style: none;
+    height: 50px;
+}
+
+li.colleague > ul > li > img {
+    border-radius: 25px;
+    background-color: #bbb;
+    height: 50px;
+    margin: auto 5px;
+    width: 50px;
+}
+
+li.colleague > ul > li > span.user_full_name {
+    color: #747474;
+    font-size: 24px;
+}

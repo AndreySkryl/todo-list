@@ -51,3 +51,9 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+
+/* мои добавления */
+a {
+    text-decoration: none;
+}

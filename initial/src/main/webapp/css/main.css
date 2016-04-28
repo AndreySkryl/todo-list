@@ -4,20 +4,6 @@
 a {
     text-decoration: none;
 }
-#templates_of_lists_of_tasks > fieldset > legend,
-#lists_of_tasks > fieldset > legend,
-#colleagues > p {
-    color: #747474;
-    font-size: 33px;
-}
-
-#templates_of_lists_of_tasks fieldset,
-#lists_of_tasks fieldset,
-#list_of_colleagues {
-    border: 3px solid #747474;
-    border-radius: 10px;
-    padding: 5px 10px;
-}
 
 #wrapper {
     position: relative;
@@ -29,7 +15,7 @@ a {
 #header {
     height: 70px;
     background-color: #d7d7d7;
-    outline: hidden;
+    overflow: hidden;
 }
 
 #navigation {
@@ -76,37 +62,4 @@ a {
 #user_full_name {
     color: #747474;
     font-size: 24px;
-}
-
-/* Списки задач */
-#wrapper_for_lists_of_tasks {
-    float: left;
-    margin-left: 15px;
-    position: relative;
-    width: 70%;
-}
-
-
-/* Коллеги */
-#colleagues {
-    float: right;
-    margin: 0 15px;
-    position: relative;
-    width: calc(100% - 70% - 45px);
-}
-
-#colleagues > p {
-    text-align: center;
-}
-
-/* Поиск */
-input#search_of_user {
-    align-content: center;
-    border-radius: 12px;
-    font-size: 14px;
-    height: 25px;
-    margin: 12px 0;
-    padding-left: 10px;
-    position: relative;
-    width: calc(100% - 15px);
 }

@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="../css/users_page.css">
+
+<template>
+    <div id="wrapper_for_users">
+        <!-- поиск новых людей -->
+        <div id="search_new_people">
+            <fieldset>
+                <legend><img src="#" alt="Поиск">Поиск новых людей</legend>
+                <div id="search">
+                    <input id="search_new_user" type="text" placeholder="Введите имя и фамилию">
+                    <input id="find" type="submit" value="Найти">
+                </div>
+
+                <div id="collection_of_people">
+                    <fieldset>
+                        <ul>
+                            <li class="user">
+                                <ul>
+                                    <li><img src="../img/cross.jpg" alt="Фото"></li>
+                                    <li><span>Пользователь 1</span></li>
+                                </ul>
+                                <input class="add_user" type="submit" value="Добавить в коллеги">
+                            </li>
+                        </ul>
+                    </fieldset>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div id="colleagues">
+        <p>Коллеги</p>
+        <input id="search_of_user" type="text" placeholder="Поиск">
+        <div id="list_of_colleagues">
+            <ul>
+                <li class="colleague">
+                    <ul>
+                        <li><img src="../img/cross.jpg" alt="Фото пользователя" width="50" height="50"/></li>
+                        <li><span class="user_full_name">Имя пользователя</span></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
