@@ -62,10 +62,12 @@
 #list_of_statuses > ul > li {
     border-right: 2px solid #747474;
     float: left;
-    padding: 5px 20px;
+    width: 100px;
+    padding: 5px 0;
 
     cursor: pointer;
     display: block;
+    text-align: center;
 }
 
 #list_of_statuses > ul > li:last-child {
@@ -74,8 +76,8 @@
 
 #list_of_statuses > ul > li:nth-child(1) { background: red; }
 #list_of_statuses > ul > li:nth-child(2) { background: orange; }
-#list_of_statuses > ul > li:nth-child(3) { background: yellow; }
-#list_of_statuses > ul > li:nth-child(4) { background: green; }
+#list_of_statuses > ul > li:nth-child(3) { background: #ffff00; }
+#list_of_statuses > ul > li:nth-child(4) { background: #39f560; }
 
 /* Поиск/добавление задач */
 #search {
