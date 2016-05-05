@@ -10,6 +10,17 @@
     border-radius: 10px;
 }
 
+#search_new_people > fieldset > legend {
+    vertical-align: baseline;
+    display: block;
+}
+
+#search_new_people > fieldset > legend > img {
+    margin-left: 10px;
+    height: 35px;
+    width: 35px;
+}
+
 /* список новых пользователей */
 #wrapper_for_users {
     float: left;
@@ -18,12 +29,26 @@
     width: 70%;
 }
 
+/* Заголовки */
+div#title_form_of_search {
+    display: table-cell;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+}
+
+div#title_form_of_search > img {
+    height: 35px;
+    width: 35px;
+    vertical-align: middle;
+}
+
 #search {
     margin: 5px 10px;
     height: 25px;
 }
 
-input#search_new_user {
+input#edit_for_search_new_user {
     border-radius: 12px;
     font-size: 14px;
     height: 25px;
@@ -31,31 +56,57 @@ input#search_new_user {
     width: 75%;
 }
 
-input#find {
-    border-radius: 16px;
-    background-color: #71cb52;
-    color: #ffffff;
+input#find,
+input.add_user {
+    font-weight: 700;
     font-size: 16px;
     height: 32px;
-    vertical-align: middle;
-    width: calc(100% - 75% - 2 * 10px);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    background: rgb(64,199,129);
+    box-shadow: 0 -3px rgb(53,167,110) inset;
+    transition: 0.2s;
+}
+
+input#find {
+    width: calc(100% - 70% - 7 * 10px);
+}
+
+input.add_user {
+    float: right;
+    position: relative;
+    width: calc(100% - 70% - 10px);
+}
+
+input#find:hover, input.add_user:hover {
+    background: rgb(53, 167, 110);
+}
+
+input#find:active, input.add_user:active {
+    background: rgb(33,147,90);
+    box-shadow: 0 3px rgb(33,147,90) inset;
 }
 
 #collection_of_people {
     margin-top: 15px;
     overflow: hidden;
-    padding-left: 5px;
 }
 
 #collection_of_people > fieldset {
     border-radius: 10px;
     border-top: 3px solid #747474;
-    padding: 5px 10px;
+    overflow: hidden;
 }
 
 li.user {
     height: 50px;
     line-height: 50px;
+    padding: 5px 10px;
+}
+
+li.user:hover {
+    background-color: #eaeaea;
 }
 
 li.user ul > li {
@@ -77,17 +128,6 @@ li.user > ul > li > span {
     font-size: 22px;
 }
 
-li.user > input.add_user {
-    background-color: #71cb52;
-    border-radius: 25px;
-    color: #ffffff;
-    font-size: 24px;
-    float: right;
-    height: 50px;
-    padding: 0 10px;
-    position: relative;
-}
-
 /* Коллеги */
 #colleagues {
     float: right;
@@ -104,6 +144,7 @@ li.user > input.add_user {
 input#search_of_user {
     align-content: center;
     border-radius: 12px;
+    color: #747474;
     font-size: 14px;
     height: 25px;
     margin: 12px 0;
@@ -116,12 +157,18 @@ input#search_of_user {
     border: 3px solid #747474;
     border-radius: 10px;
     overflow: hidden;
-    padding: 5px 10px;
 }
 
 li.colleague {
-    line-height: 50px;
+    cursor: pointer;
+    display: block;
     height: 50px;
+    line-height: 50px;
+    padding: 5px 10px;
+}
+
+li.colleague:hover {
+    background-color: #e5e5e5;
 }
 
 li.colleague > ul > li {

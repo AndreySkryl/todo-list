@@ -4,7 +4,7 @@
     <div id="wrapper_for_list_of_tasks">
         <div id="description_of_list_of_tasks">
             <fieldset>
-                <legend>Список задач "{{list_of_task.name}}"</legend>
+                <legend>Список задач {{2+2}}</legend>
                 <span>
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam dignissimos enim exercitationem maiores, molestiae nam natus nostrum officia quia repellat, sit temporibus vel? Ab amet dolor doloribus laboriosam nulla optio!
@@ -36,13 +36,37 @@
 
                 <div id="list_of_tasks">
                     <ul>
-                        <li class="description_of_task">
+                        <li class="description_of_task" style="background-color: orange;">
                             <span>Задача 1</span>
-
                             <ul>
-                                <li><img src="#" alt="1"></li>
-                                <li><img src="#" alt="2"></li>
-                                <li><img src="#" alt="3"></li>
+                                <li><img src="img/status/yellow_ellipse.png" alt="Перевести задачу в состояние {1 | 2}"></li>
+                                <li><img src="img/status/green_ellipse.png" alt="Перевести задачу в состояние {2 | 3}"></li>
+                                <li><img src="img/cross.jpg" alt="Удалить задачу"></li>
+                            </ul>
+                        </li>
+                        <li class="description_of_task" style="background-color: yellow;">
+                            <span>Задача 2</span>
+                            <ul>
+                                <li><img src="img/status/orange_ellipse.png" alt="Перевести задачу в состояние {1 | 2}"></li>
+                                <li><img src="img/status/green_ellipse.png" alt="Перевести задачу в состояние {2 | 3}"></li>
+                                <li><img src="img/cross.jpg" alt="Удалить задачу"></li>
+                            </ul>
+                        </li>
+                        <li class="description_of_task" style="background-color: #39f560;">
+                            <span>Задача 3</span>
+                            <ul>
+                                <li><img src="img/status/orange_ellipse.png" alt="Перевести задачу в состояние {1 | 2}"></li>
+                                <li><img src="img/status/yellow_ellipse.png" alt="Перевести задачу в состояние {2 | 3}"></li>
+                                <li><img src="img/cross.jpg" alt="Удалить задачу"></li>
+                            </ul>
+                        </li>
+
+                        <li class="description_of_task" style="background-color: orange;">
+                            <span>Задача 1</span>
+                            <ul>
+                                <li><img src="img/status/yellow_ellipse.png" alt="Перевести задачу в состояние {1 | 2}"></li>
+                                <li><img src="img/status/green_ellipse.png" alt="Перевести задачу в состояние {2 | 3}"></li>
+                                <li><img src="img/cross.jpg" alt="Удалить задачу"></li>
                             </ul>
                         </li>
                     </ul>
@@ -58,8 +82,14 @@
             <ul>
                 <li class="colleague">
                     <ul>
-                        <li><img src="../img/cross.jpg" alt="Фото пользователя" width="50" height="50"/></li>
-                        <li><span class="user_full_name">Имя пользователя</span></li>
+                        <li><img src="img/photo_of_user.png" alt="Фото пользователя" width="50" height="50"/></li>
+                        <li><span class="user_full_name">Коллега 1</span></li>
+                    </ul>
+                </li>
+                <li class="colleague">
+                    <ul>
+                        <li><img src="img/photo_of_user.png" alt="Фото пользователя" width="50" height="50"/></li>
+                        <li><span class="user_full_name">Коллега 2</span></li>
                     </ul>
                 </li>
             </ul>

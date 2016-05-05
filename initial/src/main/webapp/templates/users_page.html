@@ -5,9 +5,13 @@
         <!-- поиск новых людей -->
         <div id="search_new_people">
             <fieldset>
-                <legend><img src="#" alt="Поиск">Поиск новых людей</legend>
+                <legend>
+                    <div id="title_form_of_search">
+                        <img src="img/search.png" alt="Поиск">Поиск новых людей
+                    </div>
+                </legend>
                 <div id="search">
-                    <input id="search_new_user" type="text" placeholder="Введите имя и фамилию">
+                    <input id="edit_for_search_new_user" type="text" placeholder="Введите имя и фамилию">
                     <input id="find" type="submit" value="Найти">
                 </div>
 
@@ -16,8 +20,24 @@
                         <ul>
                             <li class="user">
                                 <ul>
-                                    <li><img src="../img/cross.jpg" alt="Фото"></li>
+                                    <li><img src="img/photo_of_user.png" alt="Фото"></li>
                                     <li><span>Пользователь 1</span></li>
+                                </ul>
+                                <input class="add_user" type="submit" value="Добавить в коллеги">
+                            </li>
+
+                            <li class="user">
+                                <ul>
+                                    <li><img src="img/photo_of_user.png" alt="Фото"></li>
+                                    <li><span>Пользователь 2</span></li>
+                                </ul>
+                                <input class="add_user" type="submit" value="Добавить в коллеги">
+                            </li>
+
+                            <li class="user">
+                                <ul>
+                                    <li><img src="img/photo_of_user.png" alt="Фото"></li>
+                                    <li><span>Пользователь 3</span></li>
                                 </ul>
                                 <input class="add_user" type="submit" value="Добавить в коллеги">
                             </li>
@@ -35,7 +55,7 @@
             <ul>
                 <li class="colleague">
                     <ul>
-                        <li><img src="../img/cross.jpg" alt="Фото пользователя" width="50" height="50"/></li>
+                        <li><img src="img/photo_of_user.png" alt="Фото пользователя"/></li>
                         <li><span class="user_full_name">Имя пользователя</span></li>
                     </ul>
                 </li>

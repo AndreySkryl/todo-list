@@ -2,12 +2,16 @@
     clear: both;
 }
 
+.required {
+    color: red;
+}
+
 label, input {
     color: #747474;
 }
 
 #wrapper_for_settings {
-    margin: 0 auto;
+    margin: 10px auto;
     width: 800px;
 }
 
@@ -17,7 +21,30 @@ label, input {
     float: left;
     height: 260px;
     overflow: hidden;
+    text-align: center;
     width: 50%;
+}
+
+#photo_of_user > div {
+    min-height: 200px;
+    line-height: 200px;
+}
+
+#photo_of_user > div > img {
+    display: inline;
+    height: 220px;
+    margin: 5px 0;
+    vertical-align: middle;
+}
+
+div#photo_of_user > div#change {
+    min-height: 30px;
+    line-height: 30px;
+}
+
+a#change_photo:link {
+    color: #0000cc;
+    font-size: 18px;
 }
 
 ul#settings {

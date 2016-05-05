@@ -1,3 +1,9 @@
+.center_VH {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
 .clear {
     clear: both;
 }
@@ -38,7 +44,7 @@
 }
 
 /* Описание задач */
-#description_of_tasks {
+div#description_of_tasks {
     margin: 10px 0;
     float: left;
     position: relative;
@@ -46,12 +52,12 @@
     overflow: hidden;
 }
 
-#list_of_statuses {
+div#list_of_statuses {
     height: 100%;
     width: 100%;
 }
 
-#list_of_statuses > ul {
+div#list_of_statuses > ul {
     border: 2px solid #747474;
     border-radius: 15px;
     float: right;
@@ -59,7 +65,7 @@
     overflow: hidden;
 }
 
-#list_of_statuses > ul > li {
+div#list_of_statuses > ul > li {
     border-right: 2px solid #747474;
     float: left;
     width: 100px;
@@ -68,6 +74,11 @@
     cursor: pointer;
     display: block;
     text-align: center;
+    opacity: 1;
+}
+
+div#list_of_statuses > ul > li:hover {
+    opacity: 0.9;
 }
 
 #list_of_statuses > ul > li:last-child {
@@ -76,7 +87,7 @@
 
 #list_of_statuses > ul > li:nth-child(1) { background: red; }
 #list_of_statuses > ul > li:nth-child(2) { background: orange; }
-#list_of_statuses > ul > li:nth-child(3) { background: #ffff00; }
+#list_of_statuses > ul > li:nth-child(3) { background: yellow; }
 #list_of_statuses > ul > li:nth-child(4) { background: #39f560; }
 
 /* Поиск/добавление задач */
@@ -118,31 +129,46 @@ input#find:active {
     box-shadow: 0 3px rgb(33,147,90) inset;
 }
 
+
+div#list_of_tasks {
+    border-top: 3px solid #747474;
+    border-radius: 10px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
 li.description_of_task {
     height: 50px;
     line-height: 50px;
-    margin: 5px 10px;
 }
 
 li.description_of_task > span {
     color: #747474;
-    font-size: 24px;
+    font-size: 18px;
+    padding-left: 10px;
+    word-wrap: break-word;
 }
 
 li.description_of_task > ul {
     float: right;
-    height: inherit;
+    height: 50px;
 }
 
 li.description_of_task > ul > li {
     float: left;
-    margin: 0 5px;
+    height: 50px;
+    width: 50px;
 }
 
-li.description_of_task > ul > li {
+li.description_of_task > ul > li > img {
     height: 40px;
-    line-height:40px;
     width: 40px;
+    margin: 5px 0;
+    opacity: 0.7;
+}
+
+li.description_of_task > ul > li > img:hover {
+    opacity: 1;
 }
 
 /* Коллеги */
@@ -174,12 +200,18 @@ input#search_of_user {
     border: 3px solid #747474;
     border-radius: 10px;
     overflow: hidden;
-    padding: 5px 10px;
 }
 
 li.colleague {
-    line-height: 50px;
+    cursor: pointer;
+    display: block;
     height: 50px;
+    line-height: 50px;
+    padding: 5px 10px;
+}
+
+li.colleague:hover {
+    background-color: #e5e5e5;
 }
 
 li.colleague > ul > li {

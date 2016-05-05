@@ -3,12 +3,18 @@
 <template>
     <div id="wrapper_for_settings">
         <div id="photo_of_user">
-            <img src="#" alt="Фото пользователя">
+            <div id="photo">
+                <img src="img/photo_of_user.png" alt="Фото пользователя">
+            </div>
+
+            <div id="change">
+                <a id="change_photo" href="#">Заменить фото?</a>
+            </div>
         </div>
 
         <ul id="settings">
             <li>
-                <label for="e-mail">*e-mail:</label>
+                <label for="e-mail">E-mail<span class="required">*</span>:</label>
                 <input type="text" id="e-mail">
             </li>
             <li>
@@ -25,7 +31,7 @@
             </li>
 
             <li>
-                <label for="login">*Логин:</label>
+                <label for="login">Логин<span class="required">*</span>:</label>
                 <input type="text" id="login">
             </li>
             <li>
