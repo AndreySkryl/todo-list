@@ -60,7 +60,7 @@ public class UserController {
 			Collection<String> guidesOfColleagues = colleagueService.findGuidesOfColleaguesByUserGuid(guidOfUserSender);
 
 			Collection<User> allUsersWithoutUserSenderAndColleagues =
-					userService.findAllUsersWithoutUserSenderAndColleagues(guidOfUserSender, guidesOfColleagues);
+					userService.f1(guidOfUserSender, guidesOfColleagues);
 
 		return new ResponseEntity<>(allUsersWithoutUserSenderAndColleagues, HttpStatus.OK);
 		} catch (Throwable exception) {

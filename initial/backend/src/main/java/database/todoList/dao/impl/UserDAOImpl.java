@@ -56,7 +56,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
 	@Override
-	public Collection<User> findAllUsersWithoutUserSenderAndColleagues(String guidOfUserSender, Collection<String> guidesOfColleagues) {
+	public Collection<User> f1(String guidOfUserSender, Collection<String> guidesOfColleagues) {
 		List<String> guidesOfUserSenderAndColleagues = new ArrayList<>();
 		guidesOfUserSenderAndColleagues.add(guidOfUserSender);
 		guidesOfUserSenderAndColleagues.addAll(guidesOfColleagues);

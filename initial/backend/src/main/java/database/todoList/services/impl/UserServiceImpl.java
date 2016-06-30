@@ -62,8 +62,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Collection<User> findAllUsersWithoutUserSenderAndColleagues(String guidOfUserSender, Collection<String> guidesOfColleagues) {
-		Collection<User> users = userDAO.findAllUsersWithoutUserSenderAndColleagues(guidOfUserSender, guidesOfColleagues);
+	public Collection<User> f1(String guidOfUserSender, Collection<String> guidesOfColleagues) {
+		Collection<User> users = userDAO.f1(guidOfUserSender, guidesOfColleagues);
 		if (users != null) return users;
 		else throw new NoSuchElementException(NO_FOUND_USER_WITH_THE_GUID);
 	}

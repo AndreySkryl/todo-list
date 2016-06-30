@@ -12,7 +12,7 @@ public interface UserDAO {
     User findUserByGuid(String guid);
     Collection<User> findUsersByGuid(Collection<String> guides);
     Collection<User> findAll();
-    Collection<User> findAllUsersWithoutUserSenderAndColleagues(String guidOfUserSender, Collection<String> guidesOfColleagues);
+    Collection<User> f1(String guidOfUserSender, Collection<String> guidesOfColleagues);
 
     void update(User user);
 

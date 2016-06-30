@@ -13,16 +13,36 @@ todoListApp.controller('listsOfTasksController', ['$scope', '$rootScope', 'listO
 	};
 	syncModelWithServer();
 
+	$scope.deleteListOfTasks = function (listOfTasks) {
+		var promise = listOfTasksService.deleteListOfTasks(listOfTasks.guid, guidOfUser);
+		promise.success(function(data, status, headers, config) {
+			syncModelWithServer();
+		}).error(function(data, status, headers, config) {
+			alert(status);
+		});
+	};
+
 	$scope.popUpDialogAddTemplateListOfTasks = function () {
 		// init
 		$scope.nameOfTemplateListOfTasks = '';
-		$scope.descriptionOfTemplateListOfTasks = '';
+		$scope.descriptionForCreatedTemplateListOfTasks = '';
 		$scope.typeOfCreateOfTemplateListOfTasks = '0';
 
 		$scope.showPopUpDialogAddTemplateListOfTasks = true;
 	};
+	$rootScope.$on('templateListOfTasks::created', function () {
+		syncModelWithServer();
+	});
 
-	$rootScope.$on('listOfTasks::created', function () {
+	$scope.popUpDialogAddSimpleListOfTasks = function () {
+		// init
+		$scope.nameOfSimpleListOfTasks = '';
+		$scope.descriptionForCreatedSimpleListOfTasks = '';
+		$scope.typeOfCreateOfSimpleListOfTasks = '0';
+
+		$scope.showPopUpDialogAddSimpleListOfTasks = true;
+	};
+	$rootScope.$on('simpleListOfTasks::created', function () {
 		syncModelWithServer();
 	});
 }]);
@@ -40,13 +60,13 @@ todoListApp.directive('popUpDialogAddTemplateListOfTasks', [function () {
 					userGuid: guidOfUser,
 					favourites: '1',
 					name: $scope.nameOfTemplateListOfTasks,
-					description: $scope.descriptionOfTemplateListOfTasks || ''
+					description: $scope.descriptionForCreatedTemplateListOfTasks || ''
 				};
 
 				if ($scope.typeOfCreateOfTemplateListOfTasks === '0') {
 					var promise = listOfTasksService.newListOfTasks(listOfTasks);
 					promise.success(function(data, status, headers, config) {
-						$rootScope.$emit('listOfTasks::created');
+						$rootScope.$emit('templateListOfTasks::created');
 					}).error(function(data, status, headers, config) {
 						alert(status);
 					});
@@ -74,14 +94,14 @@ todoListApp.directive('popUpDialogAddSimpleListOfTasks', [function () {
 				var listOfTasks = {
 					userGuid: guidOfUser,
 					favourites: '0',
-					name: $scope.name,
-					description: $scope.description || ''
+					name: $scope.nameOfSimpleListOfTasks,
+					description: $scope.descriptionForCreatedSimpleListOfTasks || ''
 				};
 
-				if ($scope.typeOfCreate === '0') {
+				if ($scope.typeOfCreateOfSimpleListOfTasks === '0') {
 					var promise = listOfTasksService.newListOfTasks(listOfTasks);
 					promise.success(function(data, status, headers, config) {
-						$rootScope.$emit('listOfTasks::created');
+						$rootScope.$emit('simpleListOfTasks::created');
 					}).error(function(data, status, headers, config) {
 						alert(status);
 					});

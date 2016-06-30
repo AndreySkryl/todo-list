@@ -7,8 +7,9 @@
 
         <fieldset>
             <div>
-                <input id="basedOnTemplateListOfTasks" type="radio" name="favourites" value="1" ng-model="typeOfCreateOfTemplateListOfTasks">
-                <label for="basedOnTemplateListOfTasks">На основе шаблона:</label>
+                <input id="creatingTemplateListOfTasksBasedOnTemplateListOfTasks" type="radio" name="favourites" value="1"
+                       ng-model="typeOfCreateOfTemplateListOfTasks" ng-disabled="(listsOfTasks | filter:{favourites:1}).length === 0">
+                <label for="creatingTemplateListOfTasksBasedOnTemplateListOfTasks">На основе шаблона:</label>
             </div>
 
             <div>
@@ -20,17 +21,17 @@
             </div>
 
             <div>
-                <input id="basedOnSimpleListOfTasks" type="radio" name="favourites" value="0" ng-model="typeOfCreateOfTemplateListOfTasks">
-                <label for="basedOnSimpleListOfTasks">Чистый список задач</label>
+                <input id="creatingTemplateListOfTasksBasedOnSimpleListOfTasks" type="radio" name="favourites" value="0" ng-model="typeOfCreateOfTemplateListOfTasks">
+                <label for="creatingTemplateListOfTasksBasedOnSimpleListOfTasks">Чистый список задач</label>
             </div>
         </fieldset>
 
         <div class="description">
-            <label for="description">Описание списка задач:</label>
-            <textarea id="description" ng-model="descriptionOfTemplateListOfTasks"></textarea>
+            <label for="descriptionForCreatedTemplateListOfTasks">Описание списка задач:</label>
+            <textarea id="descriptionForCreatedTemplateListOfTasks" ng-model="descriptionOfTemplateListOfTasks"></textarea>
         </div>
 
-        <div id="activities">
+        <div id="activitiesForCreatedTemplateListOfTasks">
             <button id="addTemplateListOfTasksApprove" ng-click="popUpDialogAddTemplateListOfTasksApprove()">Ок</button>
             <button id="addTemplateListOfTasksCancel" ng-click="closePopUpDialogAddTemplateListOfTasks()">Отмена</button>
         </div>

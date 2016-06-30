@@ -19,6 +19,7 @@
 
                     <li class="list_of_tasks" ng-repeat="listOfTasks in listsOfTasks | filter:{favourites:1} | orderBy:['name']">
                         <a href="#/list_of_task_page/{{listOfTasks.guid}}">{{ listOfTasks.name }}</a>
+                        <img src="img/close.png" class="close" ng-click="deleteListOfTasks(listOfTasks)">
                     </li>
                 </ul>
             </div>
@@ -45,6 +46,7 @@
 
                     <li class="list_of_tasks" ng-repeat="listOfTasks in listsOfTasks | filter:{favourites:0} | orderBy:['name']">
                         <a href="#/list_of_task_page/{{listOfTasks.guid}}">{{ listOfTasks.name }}</a>
+                        <img src="img/close.png" class="close" ng-click="deleteListOfTasks(listOfTasks)">
                     </li>
                 </ul>
             </div>
