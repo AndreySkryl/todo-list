@@ -1,0 +1,22 @@
+<div id="header">
+    <div id="navigation">
+        <ul>
+            <li><a ui-sref="main">Главная</a></li>
+            <li><a ui-sref="users">Пользователи</a></li>
+            <li><a ui-sref="settings">Настройки</a></li>
+        </ul>
+    </div>
+    <div id="user_profile" ng-controller="UserController">
+        <ul>
+            <li><img src="img/photo_of_user.png" alt="Фото пользователя"></li>
+            <li><span id="user_full_name">{{user.lastName}} {{user.firstName}}</span></li>
+
+            <li ng-if="!toolbar.auth.isAuthenticated">
+                <input type="button" ng-click="toolbar.login()" value="Войти">
+            </li>
+            <li ng-if="toolbar.auth.isAuthenticated">
+                <input type="button" ng-click="toolbar.logout()" value="Выйти">
+            </li>
+        </ul>
+    </div>
+</div>

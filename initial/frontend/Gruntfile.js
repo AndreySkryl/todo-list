@@ -44,7 +44,7 @@ module.exports = function(grunt) {
 		},
 
 		jshint: {
-			all: ['Gruntfile.js', 'build/js/*.js', 'build/views/**/*.js'],
+			all: ['Gruntfile.js', 'build/js/*.js', 'build/views/**/*.js', 'build/components/**/*.js'],
 			options: {
 				ignores: ['build/js/angular/*.js']
 			}
@@ -52,26 +52,42 @@ module.exports = function(grunt) {
 
 		concat: {
 			options: {
-				separator: ";",
+				separator: ";\n",
 				stripBanners: true,
 				banner: '/*<%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>*/\n'
 			},
 
 			basic_and_extras: {
 				files: {
-					'build/css/<%= pkg.name %>.css': [
-						'build/css/main.css',
-						'build/css/reset.css',
-						'build/views/**/*.css'
-					],
 					'build/js/<%= pkg.name %>.js': [
 						'build/js/app.js',
 						'build/js/controllers/**/*.js',
 						'build/js/directives/**/*js',
 						'build/js/services/**/*.js',
-						'build/views/**/*.js'
+						'build/views/**/*.js',
+
+						'build/components/**/*.js'
 					]
 				}
+			}
+		},
+
+		concat_css: {
+			options: {
+				separator: "\n",
+				stripBanners: true,
+				banner: '/*<%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>*/\n'
+			},
+
+			all: {
+				src: [
+					'build/css/main.css',
+					'build/css/reset.css',
+					'build/views/**/*.css',
+
+					'build/components/**/*.css'
+				],
+				dest: 'build/css/<%= pkg.name %>.css'
 			}
 		},
 
@@ -111,7 +127,7 @@ module.exports = function(grunt) {
 				tasks: ['concat', 'cssmin']
 			},
 			scripts: {
-				files: ['app/js/app.js', 'app/views/**/*.js'],
+				files: ['app/js/app.js', 'app/views/**/*.js', 'app/components/**/*.js'],
 				tasks: ['jshint', 'concat', 'uglify', 'removelogging']
 			}
 		},
@@ -124,6 +140,7 @@ module.exports = function(grunt) {
 		}
 	});
 
+	grunt.loadNpmTasks('grunt-concat-css');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-copy');
@@ -136,7 +153,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-nghtml-uglify');
 	grunt.loadNpmTasks('grunt-remove-logging');
 
-	grunt.registerTask('default', ['clean', 'copy', 'htmlmin', 'html2js', 'jshint', 'concat', 'cssmin', 'uglify', 'removelogging']);
+	grunt.registerTask('default', ['clean', 'copy', 'htmlmin', 'html2js', 'jshint', 'concat', 'concat_css', 'cssmin', 'uglify', 'removelogging']);
 	grunt.registerTask('test', []);
 };
 

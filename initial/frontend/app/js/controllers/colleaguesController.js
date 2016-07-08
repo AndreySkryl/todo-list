@@ -1,32 +1,38 @@
-todoListApp.controller('colleaguesController', ['$scope', '$rootScope', 'colleagueService', function($scope, $rootScope, colleagueService) {
-	$scope.colleagues = [];
+(function () {
+	'use strict';
 
-	var guidOfUser = '46ff4f70-061f-11e6-89e7-7c050741ff67';
+	angular.module('todoListApp')
+		.controller('ColleaguesController', ['$scope', '$rootScope', 'colleagueService',
+			function($scope, $rootScope, colleagueService) {
+			$scope.colleagues = [];
 
-	var syncModelWithServer = function () {
-		var promise = colleagueService.getAllColleaguesAsUsers(guidOfUser);
+			var guidOfUser = '46ff4f70-061f-11e6-89e7-7c050741ff67';
 
-		promise.success(function(data, status, headers, config) {
-			$scope.colleagues = data;
-		}).error(function(data, status, headers, config) {
-			alert(status);
-		});
-	};
-	syncModelWithServer();
+			var syncModelWithServer = function () {
+				var promise = colleagueService.getAllColleaguesAsUsers(guidOfUser);
 
-	$scope.deleteOneColleague = function (colleague) {
-		var promise = colleagueService.deleteOneColleague(guidOfUser, colleague.guid);
-
-		promise.success(function(data, status, headers, config) {
+				promise.success(function(data, status, headers, config) {
+					$scope.colleagues = data;
+				}).error(function(data, status, headers, config) {
+					alert(status);
+				});
+			};
 			syncModelWithServer();
-			$rootScope.$emit('colleagues::updated');
-		}).error(function(data, status, headers, config) {
-			alert(status);
-		});
-	};
 
-	// для реагирования на кнопку "добавить в коллеги" из контроллера "usersController"
-	$rootScope.$on('users::updated', function (event, data) {
-		syncModelWithServer();
-	});
-}]);
+			$scope.deleteOneColleague = function (colleague) {
+				var promise = colleagueService.deleteOneColleague(guidOfUser, colleague.guid);
+
+				promise.success(function(data, status, headers, config) {
+					syncModelWithServer();
+					$rootScope.$emit('colleagues::updated');
+				}).error(function(data, status, headers, config) {
+					alert(status);
+				});
+			};
+
+			// для реагирования на кнопку "добавить в коллеги" из контроллера "usersController"
+			$rootScope.$on('users::updated', function (event, data) {
+				syncModelWithServer();
+			});
+		}]);
+})();

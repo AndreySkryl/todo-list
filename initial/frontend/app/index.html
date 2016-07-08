@@ -4,31 +4,29 @@
     <meta charset="UTF-8">
     <title>TODO List</title>
 
+    <link rel="stylesheet" href="node_modules/angular-material/angular-material.css">
+    <!-- Auth0's lock widget library -->
+    <script type="text/javascript" src="https://cdn.auth0.com/js/lock-7.12.min.js"></script>
+    <!-- Setting the rigth viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
     <link rel="stylesheet" href="css/todo-list.css">
 </head>
 <body>
     <div id="wrapper">
-        <div id="header">
-            <div id="navigation">
-                <ul>
-                    <li><a href="#/">Главная</a></li>
-                    <li><a href="#/users">Пользователи</a></li>
-                    <li><a href="#/settings">Настройки</a></li>
-                </ul>
-            </div>
-            <div id="user_profile" ng-controller="userController">
-                <ul>
-                    <li><img src="img/photo_of_user.png" alt="Фото пользователя"></li>
-                    <li><span id="user_full_name">{{user.lastName}} {{user.firstName}}</span></li>
-                </ul>
-            </div>
-        </div>
+        <toolbar></toolbar>
 
-        <ng-view></ng-view>
+        <ui-view></ui-view>
 
-        <script src="js/angular/angular.js"></script>
-        <script src="js/angular/angular-route.min.js"></script>
-        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="node_modules/angular/angular.js"></script>
+        <script src="node_modules/angular-animate/angular-animate.js"></script>
+        <script src="node_modules/angular-aria/angular-aria.js"></script>
+        <script src="node_modules/angular-material/angular-material.js"></script>
+        <script src="node_modules/angular-jwt/dist/angular-jwt.js"></script>
+        <script src="node_modules/angular-storage/dist/angular-storage.js"></script>
+        <script src="node_modules/auth0-angular/build/auth0-angular.js"></script>
+        <script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+
         <script src="js/todo-list.js"></script>
     </div>
 </body>
