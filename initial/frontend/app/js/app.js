@@ -1,18 +1,9 @@
 (function () {
 	'use strict';
 
-	angular.module('todoListApp', ['auth0', 'angular-storage', 'angular-jwt', 'ngMaterial', 'ui.router'])
-		.config(['$provide', 'authProvider', '$urlRouterProvider', '$stateProvider', '$httpProvider', 'jwtInterceptorProvider',
-			function ($provide, authProvider, $urlRouterProvider, $stateProvider, $httpProvider, jwtInterceptorProvider) {
-
-				authProvider.init({
-					domain: 'andrey-skryl.eu.auth0.com',
-					clientID: 'WSYBqhCnmsKnJbULXfWQ4AUKmJBzbyt5'
-				});
-
-				jwtInterceptorProvider.tokenGetter = function (store) {
-					return store.get('id_token');
-				};
+	angular.module('todoListApp', ['ui.router'])
+		.config(['$urlRouterProvider', '$stateProvider',
+			function ($urlRouterProvider, $stateProvider) {
 
 				$urlRouterProvider.otherwise('/');
 
@@ -41,29 +32,6 @@
 						}
 					});
 
-				$provide.factory('redirect', ['$q', '$injector', 'auth', 'store', '$location',
-					function redirect ($q, $injector, $timeout, store, $location) {
-						var auth;
-						$timeout(function() {
-							auth = $injector.get('auth');
-						});
-
-						return {
-							responseError: function(rejection) {
-
-								if (rejection.status === 401) {
-									auth.signout();
-									store.remove('profile');
-									store.remove('id_token');
-									$location.path('/home');
-								}
-								return $q.reject(rejection);
-							}
-						};
-					}
-				]);
-				$httpProvider.interceptors.push('jwtInterceptor');
-				//$httpProvider.interceptors.push('redirect');
 		}])
 		.factory('configAppService', [function() {
 			var service = {
@@ -76,22 +44,9 @@
 
 			return service;
 		}])
-		.run(['$rootScope', 'auth', 'store', 'jwtHelper', '$location', function ($rootScope, auth, store, jwtHelper, $location) {
+		.run(['$rootScope', function ($rootScope) {
 
 			$rootScope.$on('$locationChangeStart', function () {
-
-				var token = store.get('id_token');
-				if (token) {
-					if (!jwtHelper.isTokenExpired(token)) {
-						if (!auth.isAuthenticated) {
-							auth.authenticate(store.get('profile'), token);
-						}
-					}
-				}
-
-				if (!auth.isAuthenticated) {
-					$location.path('/login');
-				}
 
 			});
 

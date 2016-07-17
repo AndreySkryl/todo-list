@@ -60,13 +60,14 @@ module.exports = function(grunt) {
 			basic_and_extras: {
 				files: {
 					'build/js/<%= pkg.name %>.js': [
+						'build/node_modules/angular/angular.min.js',
+						'build/node_modules/angular-ui-router/angular-ui-router.min.js',
 						'build/js/app.js',
+						'build/components/**/*.js',
 						'build/js/controllers/**/*.js',
 						'build/js/directives/**/*js',
 						'build/js/services/**/*.js',
-						'build/views/**/*.js',
-
-						'build/components/**/*.js'
+						'build/views/**/*.js'
 					]
 				}
 			}

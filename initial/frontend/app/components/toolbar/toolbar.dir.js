@@ -13,47 +13,7 @@
 	}
 
 	angular.module('todoListApp')
-		.controller('toolbarController', ['auth', 'store', '$location', function (auth, store, $location) {
-
-			var vm = this;
-			vm.login = login;
-			vm.logout = logout;
-			vm.auth = auth;
-
-			function login (email, password, callback) {
-				var connection = mysql({
-					host     : 'localhost',
-					user     : 'root',
-					password : 'password',
-					database : 'todo_list'
-				});
-
-				connection.connect();
-
-				var query = "SELECT GUID, LOGIN, EMAIL, PASSWORD, LASTNAME, FIRSTNAME " +
-					"FROM user WHERE EMAIL = ?";
-
-				connection.query(query, [email], function (err, results) {
-					if (err) return callback(err);
-					if (results.length === 0) return callback();
-					var user = results[0];
-
-					if (!bcrypt.compareSync(password, user.password)) {
-						return callback();
-					}
-
-					callback(null,   {
-						guid:      user.guid.toString(),
-						login:     user.login.toString(),
-						eMail:     user.eMail.toString(),
-						password:  user.password.toString(),
-						lastName:  user.lastName.toString(),
-						firstName: user.firstName.toString()
-					});
-
-				});
-
-			}
+		.controller('toolbarController', [function () {
 
 			/*function login() {
 				auth.signin({}, function (profile, token) {
