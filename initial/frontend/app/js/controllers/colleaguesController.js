@@ -2,11 +2,11 @@
 	'use strict';
 
 	angular.module('todoListApp')
-		.controller('ColleaguesController', ['$scope', '$rootScope', 'colleagueService',
-			function($scope, $rootScope, colleagueService) {
+		.controller('ColleaguesController', ['$scope', '$rootScope', 'colleagueService', 'sessionService',
+			function($scope, $rootScope, colleagueService, sessionService) {
 			$scope.colleagues = [];
 
-			var guidOfUser = '46ff4f70-061f-11e6-89e7-7c050741ff67';
+			var guidOfUser = sessionService.get('uid');
 
 			var syncModelWithServer = function () {
 				var promise = colleagueService.getAllColleaguesAsUsers(guidOfUser);

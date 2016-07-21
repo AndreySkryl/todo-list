@@ -7,30 +7,33 @@
 	function toolbar() {
 		return {
 			templateUrl: 'components/toolbar/toolbar.tpl.html',
-			controller: 'toolbarController',
+			controller: 'ToolbarController',
 			controllerAs: 'toolbar'
 		};
 	}
 
 	angular.module('todoListApp')
-		.controller('toolbarController', [function () {
+		.controller('ToolbarController', ['$scope', '$rootScope', 'loginService', 'sessionService', 'userService',
+			function ($scope, $rootScope, loginService, sessionService, userService) {
+				$scope.logout = function () {
+					loginService.logout();
+				};
 
-			/*function login() {
-				auth.signin({}, function (profile, token) {
-					store.set('profile', profile);
-					store.set('id_token', token);
-					$location.path('/');
-				}, function (error) {
-					console.log(error);
+				$scope.user = {};
+				var guidOfUser = sessionService.get('uid');
+				var syncModelWithServer = function () {
+					var promise = userService.getUserByGuid(guidOfUser);
+
+					promise.success(function (data, status, headers, config) {
+						$scope.user = data;
+					}).error(function (data, status, headers, config) {
+						alert(status);
+					});
+				};
+				syncModelWithServer();
+
+				$rootScope.$on('userSettings::updated', function (event, data) {
+					syncModelWithServer();
 				});
-			}
-
-			function logout() {
-				store.remove('profile');
-				store.remove('id_token');
-				auth.signout();
-				$location.path('/');
-			}*/
-
-		}]);
+			}]);
 })();

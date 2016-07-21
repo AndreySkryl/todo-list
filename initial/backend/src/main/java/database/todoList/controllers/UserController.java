@@ -21,6 +21,26 @@ public class UserController {
 	@Autowired private ColleagueService colleagueService;
 	@Autowired private UserService userService;
 
+	@RequestMapping(value = "/signUp", produces = "text/plain", consumes = "application/json", method = RequestMethod.POST)
+	public ResponseEntity<String> signUp(@RequestBody User user) {
+		try {
+			return new ResponseEntity<>(userService.signUp(user), HttpStatus.ACCEPTED);
+		} catch (Throwable exception) {
+			System.err.println(exception.getMessage());
+			return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@RequestMapping(value = "/login", produces = "text/plain", consumes = "application/json", method = RequestMethod.POST)
+	public ResponseEntity<String> login(@RequestBody User user) {
+		try {
+			return new ResponseEntity<>(userService.login(user), HttpStatus.ACCEPTED);
+		} catch (Throwable exception) {
+			System.err.println(exception.getMessage());
+			return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
 	@RequestMapping(value = "/add/one", consumes = "application/json", method = RequestMethod.POST)
 	public ResponseEntity<HttpStatus> newUser(@RequestBody User user) {
 		try {

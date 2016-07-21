@@ -5,6 +5,9 @@ import database.todoList.model.User;
 import java.util.Collection;
 
 public interface UserDAO {
+    String signUp(User user) throws Exception;
+    String login(User user) throws Exception;
+
     void insert(User user);
     void insertBatch(Collection<User> users);
     void insertBatchSQL(String sql);

@@ -2,11 +2,11 @@
 	'use strict';
 
 	angular.module('todoListApp')
-		.controller('ListsOfTasksController', ['$scope', '$rootScope', 'listOfTasksService',
-			function ($scope, $rootScope, listOfTasksService) {
+		.controller('ListsOfTasksController', ['$scope', '$rootScope', 'listOfTasksService', 'sessionService',
+			function ($scope, $rootScope, listOfTasksService, sessionService) {
 				$scope.listsOfTasks = [];
 
-				var guidOfUser = '46ff4f70-061f-11e6-89e7-7c050741ff67';
+				var guidOfUser = sessionService.get('uid');
 
 				var syncModelWithServer = function () {
 					var promise = listOfTasksService.getAllListsOfTasksOfUser(guidOfUser);
@@ -51,7 +51,7 @@
 					syncModelWithServer();
 				});
 			}])
-		.directive('popUpDialogAddTemplateListOfTasks', [function () {
+		.directive('popUpDialogAddTemplateListOfTasks', ['sessionService', function (sessionService) {
 			return {
 			restrict: 'E',
 			scope: false,
@@ -60,7 +60,7 @@
 				$scope.showPopUpDialogAddTemplateListOfTasks = false;
 
 				$scope.popUpDialogAddTemplateListOfTasksApprove = function () {
-					var guidOfUser = '46ff4f70-061f-11e6-89e7-7c050741ff67';
+					var guidOfUser = sessionService.get('uid');
 					var listOfTasks = {
 						userGuid: guidOfUser,
 						favourites: '1',
@@ -91,34 +91,35 @@
 				restrict: 'E',
 				scope: false,
 				templateUrl: 'views/main/popUpDialog/popUpDialogAddSimpleListOfTasks.html',
-				controller: ['$scope', '$rootScope', 'listOfTasksService', function ($scope, $rootScope, listOfTasksService) {
-					$scope.showPopUpDialogAddSimpleListOfTasks = false;
+				controller: ['$scope', '$rootScope', 'listOfTasksService', 'sessionService',
+					function ($scope, $rootScope, listOfTasksService, sessionService) {
+						$scope.showPopUpDialogAddSimpleListOfTasks = false;
 
-					$scope.popUpDialogAddSimpleListOfTasksApprove = function () {
-						var guidOfUser = '46ff4f70-061f-11e6-89e7-7c050741ff67';
-						var listOfTasks = {
-							userGuid: guidOfUser,
-							favourites: '0',
-							name: $scope.nameOfSimpleListOfTasks,
-							description: $scope.descriptionOfSimpleListOfTasks || ''
+						$scope.popUpDialogAddSimpleListOfTasksApprove = function () {
+							var guidOfUser = sessionService.get('uid');
+							var listOfTasks = {
+								userGuid: guidOfUser,
+								favourites: '0',
+								name: $scope.nameOfSimpleListOfTasks,
+								description: $scope.descriptionOfSimpleListOfTasks || ''
+							};
+
+							if ($scope.typeOfCreateOfSimpleListOfTasks === '0') {
+								var promise = listOfTasksService.newListOfTasks(listOfTasks);
+								promise.success(function (data, status, headers, config) {
+									$rootScope.$emit('simpleListOfTasks::created');
+								}).error(function (data, status, headers, config) {
+									alert(status);
+								});
+							}
+
+							$scope.showPopUpDialogAddSimpleListOfTasks = false;
 						};
 
-						if ($scope.typeOfCreateOfSimpleListOfTasks === '0') {
-							var promise = listOfTasksService.newListOfTasks(listOfTasks);
-							promise.success(function (data, status, headers, config) {
-								$rootScope.$emit('simpleListOfTasks::created');
-							}).error(function (data, status, headers, config) {
-								alert(status);
-							});
-						}
-
-						$scope.showPopUpDialogAddSimpleListOfTasks = false;
-					};
-
-					$scope.closePopUpDialogAddSimpleListOfTasks = function () {
-						$scope.showPopUpDialogAddSimpleListOfTasks = false;
-					};
-				}]
+						$scope.closePopUpDialogAddSimpleListOfTasks = function () {
+							$scope.showPopUpDialogAddSimpleListOfTasks = false;
+						};
+					}]
 			};
 		}]);
 })();

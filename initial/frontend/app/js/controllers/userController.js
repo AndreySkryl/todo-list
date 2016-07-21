@@ -2,10 +2,11 @@
 	'use strict';
 
 	angular.module('todoListApp')
-		.controller('UserController', ['$scope', '$rootScope', 'userService', function ($scope, $rootScope, userService) {
+		.controller('UserController', ['$scope', '$rootScope', 'userService', 'sessionService',
+			function ($scope, $rootScope, userService, sessionService) {
 			$scope.user = {};
 
-			var guidOfUser = '46ff4f70-061f-11e6-89e7-7c050741ff67';
+			var guidOfUser = sessionService.get('uid');
 
 			var syncModelWithServer = function () {
 				var promise = userService.getUserByGuid(guidOfUser);
@@ -21,5 +22,6 @@
 			$rootScope.$on('userSettings::updated', function (event, data) {
 				syncModelWithServer();
 			});
-		}]);
+			}
+		]);
 })();

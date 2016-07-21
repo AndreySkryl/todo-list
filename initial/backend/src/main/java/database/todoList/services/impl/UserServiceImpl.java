@@ -22,6 +22,25 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public String signUp(User user) throws Exception {
+		if (!validation(user)) throw new IllegalArgumentException(THE_FIELDS_ARE_NOT_FILLED);
+
+		return userDAO.signUp(user);
+	}
+
+	/**
+	 * @param user (login, password)
+	 * @return guid
+	 */
+	@Override
+	public String login(User user) throws Exception {
+		if (!(user.getLogin() != null && user.getPassword() != null))
+			throw new IllegalArgumentException(THE_FIELDS_ARE_NOT_FILLED);
+
+		return userDAO.login(user);
+	}
+
+	@Override
 	public void insertUser(User user) {
 		if (!validation(user)) throw new IllegalArgumentException(THE_FIELDS_ARE_NOT_FILLED);
 

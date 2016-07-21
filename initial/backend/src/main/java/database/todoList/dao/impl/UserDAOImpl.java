@@ -3,6 +3,7 @@ package database.todoList.dao.impl;
 import database.todoList.dao.UserDAO;
 import database.todoList.mappers.UserRowMapper;
 import database.todoList.model.User;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,36 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
 	@Autowired(required = false)
     private JdbcTemplate jdbcTemplate;
+
+	@Override
+	public String signUp(User user) throws Exception {
+		List<User> usersFromDB;
+		String sql = "SELECT * FROM USER WHERE LOGIN = ?;";
+		usersFromDB = jdbcTemplate.query(sql, new UserRowMapper(), user.getLogin());
+		if (!usersFromDB.isEmpty()) throw new Exception("Пользователь с логином уже существует.");
+
+		sql = "SELECT * FROM USER WHERE EMAIL = ?;";
+		usersFromDB = jdbcTemplate.query(sql, new UserRowMapper(), user.geteMail());
+		if (!usersFromDB.isEmpty()) throw new Exception("Пользователь с такой эл. почтой уже существует.");
+
+		insert(user);
+
+		return "";
+	}
+
+	@Override
+	public String login(User user) throws Exception {
+		String sql = "SELECT * FROM USER WHERE LOGIN = ? OR EMAIL = ?;";
+		List<User> usersFromDB = jdbcTemplate.query(sql, new UserRowMapper(), user.getLogin(), user.getLogin());
+
+		if (usersFromDB.size() != 0) {
+			User userFromDB = usersFromDB.get(0);
+
+			String password = DigestUtils.md5Hex(user.getPassword());
+			if (password.equals(userFromDB.getPassword())) return userFromDB.getGuid();
+			else throw new Exception("Указан неверный пароль.");
+		} else throw new Exception("Пользователя с таким логином (e-mail) не удалось найти.");
+	}
 
     @Override
     public void insert(User user) {
@@ -36,7 +67,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User findUserByGuid(String guid) {
         String sql = "SELECT * FROM USER WHERE GUID = ?;";
-		return jdbcTemplate.queryForObject(sql,  new UserRowMapper(), guid);
+		return jdbcTemplate.queryForObject(sql, new UserRowMapper(), guid);
     }
 
 	@Override
@@ -77,8 +108,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void update(User user) {
-        String sql = "UPDATE USER SET LOGIN = ?, LASTNAME = ?, FIRSTNAME = ?, PASSWORD = ?, EMAIL = ? WHERE GUID = ?;";
-        jdbcTemplate.update(sql, user.getLogin(), user.getLastName(), user.getFirstName(), user.getPassword(),
+		String password = DigestUtils.md5Hex(user.getPassword());
+		String sql = "UPDATE USER SET LOGIN = ?, LASTNAME = ?, FIRSTNAME = ?, PASSWORD = ?, EMAIL = ? WHERE GUID = ?;";
+		jdbcTemplate.update(sql, user.getLogin(), user.getLastName(), user.getFirstName(), password,
 				user.geteMail(), user.getGuid());
     }
 
